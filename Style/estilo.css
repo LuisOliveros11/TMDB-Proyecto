@@ -164,6 +164,7 @@
 
 .tendencias{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-bottom: 50px;
 }
 
 .tendencias h3{
@@ -171,4 +172,35 @@
     margin-bottom: 30px;
     margin-left: 20px;
     font-weight: bold;
+}
+
+.tendencias button{
+    color: rgb(13, 173, 13);
+    background-color: rgb(21, 19, 83);
+    border-radius: 30px;
+    font-size: 20px;
+    width: 12%;
+    height: 35px;
+    margin-left: 7%;
+}
+
+.popular{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.popular h3{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.popular button{
+    color: rgb(13, 173, 13);
+    background-color: rgb(21, 19, 83);
+    border-radius: 30px;
+    font-size: 20px;
+    width: 12%;
+    height: 35px;
+    margin-left: 7%;
 }

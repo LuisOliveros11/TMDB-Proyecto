@@ -81,11 +81,37 @@
       <div class="tendencias">
         <h3>
           Tendencias
-        </h3>
+          <button>
+            Esta semana
+          </button>
+        </h3> 
         <div id="main-popular">
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Trending" :key="pelicula.id" class="card card-body">
+                <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
+                <h5>{{pelicula.title}}</h5>
+                <p>{{pelicula.release_date}}</p>
+                <div class="rating-container">
+                  <p>{{pelicula.vote_average * 10}}%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="popular">
+        <h3>
+          Lo más popular
+          <button>
+            En cines
+          </button>
+        </h3> 
+        <div id="main-popular">
+          <div class="container-fluid py-2">
+            <div class="d-flex flex-row flex-nowrap">
+              <div v-for="pelicula in peliculas_Popular" :key="pelicula.id" class="card card-body">
                 <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
@@ -127,10 +153,12 @@
   createApp({
     setup() {
       peliculas_Trending = ref([]);
+      peliculas_Popular = ref([]);
       let img_Fondo = ref("");
 
       return {
         peliculas_Trending,
+        peliculas_Popular,
         img_Fondo
       }
     },
@@ -158,9 +186,22 @@
       fetch("https://api.themoviedb.org/3/trending/movie/week?language=es-MX&api_key=9cf1198f36410ea23852c01c0c427731", requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          console.log(result)
           this.peliculas_Trending = result.results;
           this.img_Fondo = "https://media.themoviedb.org/t/p/w1280_and_h720_face/" + this.peliculas_Trending[Math.floor(Math.random() * 20)].backdrop_path;
+        })
+        .catch((error) => console.error(error));
+
+
+        const requestOptions2 = {
+        method: "GET",
+        redirect: "follow"
+      };
+
+      fetch("https://api.themoviedb.org/3/movie/now_playing?language=es-MX&api_key=9cf1198f36410ea23852c01c0c427731&sort_by=vote_average.desc", requestOptions2)
+        .then((response) => response.json())
+        .then((result) =>{
+          this.peliculas_Popular = result.results;
+          console.log(result)
         })
         .catch((error) => console.error(error));
     }
