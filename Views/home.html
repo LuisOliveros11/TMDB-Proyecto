@@ -84,7 +84,7 @@
           <button>
             Esta semana
           </button>
-        </h3> 
+        </h3>
         <div id="main-popular">
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
@@ -107,16 +107,39 @@
           <button>
             En cines
           </button>
-        </h3> 
+        </h3>
         <div id="main-popular">
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
-              <div v-for="pelicula in peliculas_Popular" :key="pelicula.id" class="card card-body">
+              <div v-for="pelicula in peliculas_Cartelera" :key="pelicula.id" class="card card-body">
                 <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
                 <div class="rating-container">
                   <p>{{pelicula.vote_average * 10}}%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="popular-series">
+        <h3>
+          Lo más popular en series
+          <button>
+            Esta semana
+          </button>
+        </h3>
+        <div id="main-popular">
+          <div class="container-fluid py-2">
+            <div class="d-flex flex-row flex-nowrap">
+              <div v-for="serie in series_Trending" :key="serie.id" class="card card-body">
+                <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + serie.poster_path">
+                <h5>{{serie.original_name}}</h5>
+                <p>{{serie.first_air_date}}</p>
+                <div class="rating-container">
+                  <p>{{serie.vote_average * 10}}%</p>
                 </div>
               </div>
             </div>
@@ -153,19 +176,22 @@
   createApp({
     setup() {
       peliculas_Trending = ref([]);
+      series_Trending = ref([]);
+      peliculas_Cartelera = ref([]);
       peliculas_Popular = ref([]);
+      peliculas_Gratis = ref([]);
       let img_Fondo = ref("");
 
       return {
         peliculas_Trending,
+        peliculas_Cartelera,
         peliculas_Popular,
+        peliculas_Gratis,
+        series_Trending,
         img_Fondo
       }
     },
     methods: {
-      peliculas() {
-        console.log(this.peliculas_Trending)
-      }
 
     },
     mounted() {
@@ -182,7 +208,6 @@
         method: "GET",
         redirect: "follow"
       };
-
       fetch("https://api.themoviedb.org/3/trending/movie/week?language=es-MX&api_key=9cf1198f36410ea23852c01c0c427731", requestOptions)
         .then((response) => response.json())
         .then((result) => {
@@ -192,18 +217,64 @@
         .catch((error) => console.error(error));
 
 
-        const requestOptions2 = {
+      const requestOptions2 = {
         method: "GET",
         redirect: "follow"
       };
-
       fetch("https://api.themoviedb.org/3/movie/now_playing?language=es-MX&api_key=9cf1198f36410ea23852c01c0c427731&sort_by=vote_average.desc", requestOptions2)
         .then((response) => response.json())
-        .then((result) =>{
-          this.peliculas_Popular = result.results;
-          console.log(result)
+        .then((result) => {
+          this.peliculas_Cartelera = result.results;
         })
         .catch((error) => console.error(error));
+      /*
+      while (this.peliculas_Gratis.length < 20) {
+        console.log("estoy entrando al while")
+        for (let index = 0; index < 100; index++) {
+          const requestOptions3 = {
+            method: "GET",
+            redirect: "follow"
+          };
+          fetch("https://api.themoviedb.org/3/movie/popular?api_key=9cf1198f36410ea23852c01c0c427731&language=es-MX&page=" + index, requestOptions3)
+            .then((response) => response.json())
+            .then((result) => {
+              this.peliculas_Popular = result.results;
+              this.peliculas_Popular.forEach(pelicula => {
+                const requestOptions = {
+                  method: "GET",
+                  redirect: "follow"
+                };
+                fetch("https://api.themoviedb.org/3/movie/" + pelicula.id + "/watch/providers?api_key=9cf1198f36410ea23852c01c0c427731", requestOptions)
+                  .then((response) => response.json())
+                  .then((result) => {
+
+                    if (result.results.MX) {
+                      console.log(result.results.MX.free)
+                      this.peliculas_Gratis.push(pelicula)
+                    }
+                  })
+                  .catch((error) => console.error(error));
+              });
+            })
+            .catch((error) => console.error(error));
+        }
+      }
+      console.log(this.peliculas_Gratis)
+      */
+
+      const requestOptions4 = {
+      method: "GET",
+      redirect: "follow"
+    };
+
+    fetch("https://api.themoviedb.org/3/trending/tv/week?language=es_MX&api_key=9cf1198f36410ea23852c01c0c427731", requestOptions4)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result)
+        this.series_Trending = result.results;
+      })
+      .catch((error) => console.error(error));
+      
     }
   }).mount('#home')
 </script>

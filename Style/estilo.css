@@ -101,10 +101,26 @@
     cursor: pointer;
 }
 
+.popular-series img{
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.popular img{
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.tendencias img{
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
 .card-body {
     min-height: 200px;
     min-width: 200px;
     margin-right: 5px;
+    border-color: transparent;
 }
 
 .card-body p {
@@ -196,6 +212,27 @@
 }
 
 .popular button{
+    color: rgb(13, 173, 13);
+    background-color: rgb(21, 19, 83);
+    border-radius: 30px;
+    font-size: 20px;
+    width: 12%;
+    height: 35px;
+    margin-left: 7%;
+}
+
+.popular-series{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.popular-series h3{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.popular-series button{
     color: rgb(13, 173, 13);
     background-color: rgb(21, 19, 83);
     border-radius: 30px;
