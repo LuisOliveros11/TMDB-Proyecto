@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/Style/navbar.css">
+</head>
+
+<body>
+  <div class="menu-superior">
+
+    <div class="d-flex justify-content-between align-items-center" style="height: 100%;">
+      <div class="opciones">
+        <a href="./home.html">
+          <img src="/img/Logo.png" class="logo">
+        </a>
+        <div class="opciones-dropdown">
+          <h4>Películas</h4>
+          <div class="dropdown">
+            <li><a href="./Listas/Lista_Peliculas/movies_popular.html">Populares</a></li>
+            <li><a href="./Listas/Lista_Peliculas/movies_cartelera.html">En cartelera</a></li>
+            <li><a href="./Listas/Lista_Peliculas/movies_rating.html">Mejor calificados</a></li>
+          </div>
+        </div>
+        <div class="opciones-dropdown">
+          <h4>Series de TV</h4>
+          <div class="dropdown">
+            <li><a href="./Listas/Lista_series/series_popular.html">Populares</a></li>
+            <li><a href="./Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
+          </div>
+        </div>
+        
+
+      </div>
+
+      <div class="opciones-perfil">
+        <div class="opciones-dropdown perfil-dropdown">
+          <div class="button-perfil">
+            <div class="icono-perfil">
+              <img src="/img/perfil.png">
+            </div>
+          </div>
+          <div class="dropdown-perfil">
+            <li><a href="/Listas/Lista_Peliculas/movies_rated.html">Cerrar sesión</a></li>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</body>
+<script>
+  //Podría ir en la carpeta de Scripts
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const perfilButton = document.querySelector('.button-perfil');
+    const dropdownMenu = document.querySelector('.perfil-dropdown .dropdown-perfil');
+
+    perfilButton.addEventListener('click', function () {
+      dropdownMenu.classList.toggle('active');
+    });
+
+    // Cerrar el dropdown si se hace clic fuera
+    document.addEventListener('click', function (e) {
+      if (!perfilButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.classList.remove('active');
+      }
+    });
+  });
+</script>
+
+
+</html>
