@@ -164,7 +164,7 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="serie in series_Trending" :key="serie.id" class="card card-body">
-                <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + serie.poster_path">
+                <img @click="guardarDatosSerie(serie)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + serie.poster_path">
                 <h5>{{serie.original_name}}</h5>
                 <p>{{serie.first_air_date}}</p>
                 <div class="rating-container">
@@ -224,6 +224,10 @@
       guardarDatos(pelicula) {
         localStorage.setItem('peliculaSeleccionada', JSON.stringify(pelicula));
         window.location.href = 'movie.html';
+      },
+      guardarDatosSerie(serie) {
+        localStorage.setItem('serieSeleccionada', JSON.stringify(serie));
+        window.location.href = 'serie.html';
       }
     },
     mounted() {
