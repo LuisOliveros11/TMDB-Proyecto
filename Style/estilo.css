@@ -55,7 +55,7 @@
     z-index: 1;
 }
 
-.texto, .banner .input-group, .titulos{
+.texto, .banner .input-group, .titulos, .menu-superior{
     position: relative;
     z-index: 2; 
 }

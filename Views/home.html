@@ -51,7 +51,7 @@
               </div>
             </div>
             <div class="dropdown-perfil">
-              <li><a href="/Listas/Lista_Peliculas/movies_rated.html">Cerrar sesión</a></li>
+              <li><a @click="cerrarSesion()">Cerrar sesión</a></li>
             </div>
           </div>
         </div>
@@ -87,7 +87,8 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Trending" :key="pelicula.id" class="card card-body">
-                <img @click="guardarDatos(pelicula)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
+                <img @click="guardarDatos(pelicula)"
+                  v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
                 <div class="rating-container">
@@ -110,7 +111,8 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Cartelera" :key="pelicula.id" class="card card-body">
-                <img @click="guardarDatos(pelicula)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
+                <img @click="guardarDatos(pelicula)"
+                  v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
                 <div class="rating-container">
@@ -133,7 +135,8 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Gratis" :key="pelicula.id" class="card card-body">
-                <img @click="guardarDatos(pelicula)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
+                <img @click="guardarDatos(pelicula)"
+                  v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
                 <div class="rating-container">
@@ -164,7 +167,8 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="serie in series_Trending" :key="serie.id" class="card card-body">
-                <img @click="guardarDatosSerie(serie)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + serie.poster_path">
+                <img @click="guardarDatosSerie(serie)"
+                  v-bind:src="'https://media.themoviedb.org/t/p/w500' + serie.poster_path">
                 <h5>{{serie.original_name}}</h5>
                 <p>{{serie.first_air_date}}</p>
                 <div class="rating-container">
@@ -228,6 +232,12 @@
       guardarDatosSerie(serie) {
         localStorage.setItem('serieSeleccionada', JSON.stringify(serie));
         window.location.href = 'serie.html';
+      },
+      cerrarSesion() {
+        localStorage.removeItem("logeado")
+        localStorage.removeItem('usuario',);
+        localStorage.removeItem('session_id',);
+        window.location.href = 'login.html';
       }
     },
     mounted() {
@@ -273,21 +283,19 @@
             );
             const dataPeliculas = await response.json();
 
-            for (const pelicula of dataPeliculas.results) {
+            const promises = dataPeliculas.results.map(async (pelicula) => {
               const provedoresResponse = await fetch(
                 `https://api.themoviedb.org/3/movie/${pelicula.id}/watch/providers?api_key=9cf1198f36410ea23852c01c0c427731`
               );
               const provedoresData = await provedoresResponse.json();
-
               const provedoresInfo = provedoresData.results["MX"];
-              if (provedoresInfo && provedoresInfo.free) {
-                this.peliculas_Gratis.push(pelicula); 
-              }
 
-              if (this.peliculas_Gratis.length >= 20){
-                break; 
-              }  
-            }
+              if (provedoresInfo && provedoresInfo.free) {
+                this.peliculas_Gratis.push(pelicula);
+              }
+            });
+
+            await Promise.all(promises); 
             pagina++;
           }
         } catch (error) {
