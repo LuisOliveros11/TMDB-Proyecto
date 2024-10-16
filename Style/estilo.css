@@ -241,3 +241,30 @@
     height: 35px;
     margin-left: 7%;
 }
+
+.gratis{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.gratis h3{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.cargando{
+    text-align: center;
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+
+.gratis button{
+    color: rgb(13, 173, 13);
+    background-color: rgb(21, 19, 83);
+    border-radius: 30px;
+    font-size: 20px;
+    width: 12%;
+    height: 35px;
+    margin-left: 7%;
+}
