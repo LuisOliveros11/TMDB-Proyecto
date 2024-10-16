@@ -52,8 +52,6 @@
             </div>
             <div class="dropdown-perfil">
               <li><a href="/Listas/Lista_Peliculas/movies_rated.html">Cerrar sesión</a></li>
-
-
             </div>
           </div>
         </div>
@@ -89,7 +87,7 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Trending" :key="pelicula.id" class="card card-body">
-                <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
+                <img @click="guardarDatos(pelicula)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
                 <div class="rating-container">
@@ -112,7 +110,7 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Cartelera" :key="pelicula.id" class="card card-body">
-                <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
+                <img @click="guardarDatos(pelicula)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
                 <div class="rating-container">
@@ -135,7 +133,7 @@
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Gratis" :key="pelicula.id" class="card card-body">
-                <img v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
+                <img @click="guardarDatos(pelicula)" v-bind:src="'https://media.themoviedb.org/t/p/w500' + pelicula.poster_path">
                 <h5>{{pelicula.title}}</h5>
                 <p>{{pelicula.release_date}}</p>
                 <div class="rating-container">
@@ -223,7 +221,10 @@
       }
     },
     methods: {
-
+      guardarDatos(pelicula) {
+        localStorage.setItem('peliculaSeleccionada', JSON.stringify(pelicula));
+        window.location.href = 'movie.html';
+      }
     },
     mounted() {
       let logeado = localStorage.getItem("logeado");
