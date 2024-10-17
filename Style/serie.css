@@ -88,21 +88,8 @@ html, body {
     text-align: left; 
 }
 
-.creador h5 {
-    font-weight: bold;
-    color: white;
-    text-align: left; 
-}
 
 
-.creador-nombre p{
-    font-weight: bold;
-    
-}
-.creador-nombre{
-    text-align: left;
-    
-}
 
 
 .row {
@@ -163,6 +150,17 @@ html, body {
 .genero:hover {
     color: #757575;
 }
+
+.creador {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 200px; 
+}
+
+.container-datos {
+    margin-top: 50px;
+}
+
 
 
 @media (max-width: 800px) {
