@@ -237,12 +237,14 @@
         localStorage.removeItem("logeado")
         localStorage.removeItem('usuario',);
         localStorage.removeItem('session_id',);
+        localStorage.removeItem('request_token',);
         window.location.href = 'login.html';
       }
     },
     mounted() {
       let logeado = localStorage.getItem("logeado");
       let usuario = localStorage.getItem("usuario");
+      let request_token = localStorage.getItem("request_token");
       let session_id = localStorage.getItem("session_id");
 
 
@@ -288,9 +290,9 @@
                 `https://api.themoviedb.org/3/movie/${pelicula.id}/watch/providers?api_key=9cf1198f36410ea23852c01c0c427731`
               );
               const provedoresData = await provedoresResponse.json();
-              const provedoresInfo = provedoresData.results["MX"];
+              //const provedoresInfo = provedoresData.results["MX"];
 
-              if (provedoresInfo && provedoresInfo.free) {
+              if (provedoresData && provedoresData.free) {
                 this.peliculas_Gratis.push(pelicula);
               }
             });
