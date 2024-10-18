@@ -140,7 +140,6 @@
             </div>
         </div>
 
-        <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
@@ -153,13 +152,14 @@
                     </div>
                     <div class="modal-body">
                         <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item"
-                                :src="'https://www.youtube.com/embed/' + serie_video_src" allowfullscreen></iframe>
+                            <iframe id="yt-player" class="embed-responsive-item"
+                                :src="'https://www.youtube.com/embed/' + serie_video_src + '?enablejsapi=1'"
+                                allowfullscreen></iframe>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>-->
+                <button type="button" class="btn btn-primary">Save changes</button> -->
                     </div>
                 </div>
             </div>
@@ -189,7 +189,9 @@
                 generos: "",
                 casting: [],
                 serie_videos: [],
-                serie_video_src: ""
+                serie_video_src: "",
+                contador_modal: 0,
+                modal_bandera: false
             };
         },
         methods: {
@@ -200,19 +202,7 @@
             cerrarModal() {
                 $('#ratingModal').modal('hide');
             },
-            cerrar_video_modal() {
-                const iframe = document.querySelector('#exampleModal .embed-responsive-item');
-                //Parar el video si cierra el modal
-                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-            },
-            cargar_video() {
-                const iframe = document.querySelector('#exampleModal .embed-responsive-item');
-                const newSrc = 'https://www.youtube.com/embed/' + this.serie_video_src + '?enablejsapi=1';
 
-                if (iframe.src !== newSrc) {
-                    iframe.src = newSrc;
-                }
-            },
             async anadirRating() {
                 const sessionId = localStorage.getItem('session_id');
                 const peliculaId = this.pelicula.id;
@@ -374,16 +364,22 @@
 
             //CARGAR Y DEJAR DE REPRODUCIR EL VIDEO AL ABRIR O CERRAR EL MODAL
 
-            $('#exampleModal').on('hidden.bs.modal', () => {
-                this.cerrar_video_modal();
-            });
-
-            $('#exampleModal').on('show.bs.modal', () => {
 
 
-            });
         }
     }).mount('#app');
+</script>
+<script type="text/javascript">
+    $('#exampleModal').on('hidden.bs.modal', function () {
+        callPlayer('yt-player', 'stopVideo');
+    });
+
+    function callPlayer(playerId, parar_video) {
+        const player = document.getElementById(playerId);
+        if (player && player.contentWindow) {
+            player.contentWindow.postMessage('{"event":"command","func":"' + parar_video + '","args":""}', '*');
+        }
+    }
 </script>
 
 <script>
