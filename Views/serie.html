@@ -185,7 +185,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="btn-container">
-                                    <button v-for="(palabra, index) in palabras_clave.slice(mitad_palabras_clave)" :key="palabra.id" class="btn-palabra-clave">
+                                    <button @click="guardar_id_palabra_clave(palabra.id)" v-for="(palabra, index) in palabras_clave.slice(mitad_palabras_clave)" :key="palabra.id" class="btn-palabra-clave">
                                         <p>{{palabra.name}}</p>
                                     </button>
                                 </div>
