@@ -63,9 +63,11 @@
         <div class="pelicula-container">
             <img :src="'https://image.tmdb.org/t/p/original/' + pelicula_detalles.backdrop_path"
                 alt="Backdrop de la Película" class="pelicula-container-img">
+
             <div class="portada">
                 <img :src="'http://image.tmdb.org/t/p/w500' + pelicula.poster_path" alt="Poster de la Película">
             </div>
+
 
             <div class="resumen">
                 <div class="titulo">
@@ -82,40 +84,103 @@
                         <span v-if="index < pelicula_detalles.genres.length - 1">, </span>
                     </span>
                 </div>
+
                 <div class="container-datos">
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                         Launch demo modal
-                    </button>
-
-
-
-                    <h3>Resumen</h3>
-                    <div class="resumen-texto">
-                        <p>{{ pelicula_detalles.overview }}</p>
-
+                    </button> -->
+                    <div class="trailer">
+                        <button type="button" class="btn-trailer" data-toggle="modal" data-target="#exampleModal">
+                            <div class="btn-trailer-icono">
+                                <img src="/img/icono_play.svg" alt="">
+                            </div>
+                        </button>
+                        <h5>Reproducir trailer</h5>
 
                     </div>
-                    <div class="creador">
-                        <div class="creador-nombre" v-for="(actor, index) in casting" :key="index">
-                            <p style="font-weight: bold;">{{actor.name}}</p>
-                            <p>{{actor.job}}</p>
+
+
+
+
+                    <div class="informacion-pelicula">
+
+                        <h3>Resumen</h3>
+
+                        <div class="resumen-texto">
+                            <p>{{ pelicula_detalles.overview }}</p>
+
+
+                        </div>
+                        <div class="creador">
+                            <div class="creador-nombre" v-for="(actor, index) in casting" :key="index">
+                                <p style="font-weight: bold;">{{actor.name}}</p>
+                                <p>{{actor.job}}</p>
+
+                            </div>
+
 
                         </div>
 
+                        <div class="boton-rating">
+                            <button @click="mostrarModal" class="btn btn-primary btn-lg">Añadir Rating</button>
+                            <span v-if="pelicula.rating !== undefined" class="ml-3">Rating dado: {{ pelicula.rating
+                                }}</span>
+                        </div>
 
                     </div>
 
-                    <div class="boton-rating">
-                        <button @click="mostrarModal" class="btn btn-primary btn-lg">Añadir Rating</button>
-                        <span v-if="pelicula.rating !== undefined" class="ml-3">Rating dado: {{ pelicula.rating
-                            }}</span>
-                    </div>
+
 
                 </div>
 
             </div>
+
+
         </div>
+
+        <div class="casting-container">
+            <h4>Casting</h4>
+            <div class="row">
+                <div class="col-md-10">
+                    <!-- CASTING Y TEMPORADAS -->
+                    <div class="scroll-container">
+                        <div class="actor-card" v-for="(actor, index) in actores" :key="index">
+                            <img v-if="actor.profile_path" :src="actor.profile_path" alt="Imagen del Actor"
+                                class="img-fluid">
+                            <img v-else src="/img/placeholder.png" alt="Sin imagen disponible" class="img-fluid">
+                            <h4>{{ actor.name }}</h4>
+                            <p>Rol: {{ actor.character }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL DERECHO -->
+                <div class="col-md-2 info-container">
+                    <h3>Información Extra</h3>
+                    <div class="redes-sociales">
+                        <h5 v-if="redes_contador > 0">Redes sociales</h5>
+                        <div class="iconos-container">
+                            <div v-if="facebook">
+                                <a :href="'https://www.facebook.com/' + facebook_link" target="_blank"><img src="/img/icon/icono_facebook.png" alt="facebook" class="red-social-icono"></a>
+                            </div>
+                            <div v-if="twitter">
+                                <a :href="'https://www.twitter.com/' + twitter_link" target="_blank"><img src="/img/icon/icono_twitter.png" alt="twitter" class="red-social-icono"></a>
+                            </div>
+                            <div v-if="instagram">
+                                <a :href="'https://www.instagram.com/' + instagram_link" target="_blank"><img src="/img/icon/icono_instagram.png" alt="instagram" class="red-social-icono"></a>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem quasi iure, quod ipsa non
+                        eligendi obcaecati cupiditate nam provident illo nemo, nihil amet doloremque nesciunt
+                        reprehenderit, doloribus ad. Harum, cumque?</p>
+                </div>
+            </div>
+        </div>
+
 
         <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel"
             aria-hidden="true">
@@ -164,6 +229,9 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -188,7 +256,10 @@
                 pelicula_detalles: [],
                 generos: "",
                 casting: [],
+                actores: [],
                 serie_videos: [],
+                redes_sociales: [], facebook_link: "", twitter_link: "", instagram_link: "", redes_contador: 0, //Si hay al menos una red, mostrar el texto de redes sociales con el contador
+                facebook: false, twitter: false, instagram: false, //Si son ture, entonces mostrar sus imagenes en el html
                 serie_video_src: "",
                 contador_modal: 0,
                 modal_bandera: false
@@ -302,6 +373,23 @@
                 }
             },
 
+            obtener_actores() {
+                fetch(`https://api.themoviedb.org/3/tv/${this.pelicula.id}/credits?&api_key=9cf1198f36410ea23852c01c0c427731`)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(json => {
+                        this.actores = json.cast.slice(0, 20).map(actor => ({
+                            name: actor.name,
+                            character: actor.character,
+                            profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : null,
+                        }));
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud:', error);
+                    });
+            },
+
             async obtener_video() {
                 const url = `https://api.themoviedb.org/3/tv/${this.pelicula.id}/videos?&api_key=9cf1198f36410ea23852c01c0c427731`;
                 try {
@@ -333,6 +421,55 @@
                 }
 
             },
+            async obtener_redes_sociales() {
+                const url = `https://api.themoviedb.org/3/tv/${this.pelicula.id}/external_ids?&api_key=9cf1198f36410ea23852c01c0c427731`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+                    const json = await response.json();
+
+                    this.redes_sociales = [];
+
+                    //Se agregan las redes si existen
+                    if (json.facebook_id) {
+                        this.facebook = true;
+                        this.redes_sociales.push({ name: "Facebook", id: json.facebook_id });
+                    }
+                    if (json.instagram_id) {
+                        this.instagram = true;
+                        this.redes_sociales.push({ name: "Instagram", id: json.instagram_id });
+                    }
+                    if (json.twitter_id) {
+                        this.twitter = true;
+                        this.redes_sociales.push({ name: "Twitter", id: json.twitter_id });
+                    }
+
+                    this.redes_sociales.forEach(red_social => {
+                        console.log("red: " + red_social.id)
+                        if(red_social.name = "Facebook"){
+                            this.facebook_link = red_social.id;
+                            this.redes_contador++;
+                        }
+                        if(red_social.name = "Twitter"){
+                            this.twitter_link = red_social.id;
+                            this.redes_contador++;
+
+                        }
+                        if(red_social.name = "Instagram"){
+                            this.instagram_link = red_social.id;
+                            this.redes_contador++;
+
+                        }
+                        
+                    });
+                    console.log(this.facebook_link)
+
+                } catch (error) {
+                    console.error(error);
+                }
+            },
             guardarDatos(genero) {
                 localStorage.setItem('generoSeleccionado', JSON.stringify(genero));
                 window.location.href = 'genero.html';
@@ -359,7 +496,10 @@
             console.log(this.pelicula.id)
             this.obtener_pelicula();
             this.obtener_casting();
+            this.obtener_actores();
+            this.obtener_redes_sociales();
             this.obtener_rating();
+            
 
 
             //CARGAR Y DEJAR DE REPRODUCIR EL VIDEO AL ABRIR O CERRAR EL MODAL

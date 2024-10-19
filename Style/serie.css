@@ -27,13 +27,14 @@ html, body {
 
 .portada {
     width: 300px;
-    margin-right: 20px;
+    margin-left: 15vw; 
     z-index: 2;
 }
 
 .portada img {
     height: 60vh;
     width: auto;
+    margin-right: 100px;
 }
 
 .titulo {
@@ -52,13 +53,18 @@ html, body {
     color: white;
     text-align: left;
     width: 60vw;
-    margin-left: 100px;
+    margin-left: 10vw;
     
+    
+}
+
+.informacion-pelicula{
+    margin-top: 3%;
 }
 
 .resumen-texto p{
     height:auto;
-    width: 60vw;
+    width: 35vw;
 }
 
 .pelicula-container h1 {
@@ -158,11 +164,120 @@ html, body {
 }
 
 .container-datos {
-    margin-top: 50px;
+    margin-top: 20px;
+}
+
+.casting-container{
+    margin-left: 15vw; 
+    margin-right: 10vw; 
+    margin-top: 20px;
+}
+
+.info-container {
+    background-color: #f8f9fa;
+    left: vw;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: black;
 }
 
 
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px 0; 
+   
+}
 
+.actor-card {
+    flex: 0 0 auto; 
+    width: 200px; 
+    margin-right: 15px;
+}
+
+.rating-circle {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f1c40f;
+    color: white;
+    font-size: 18px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid #e67e22;
+}
+
+.pelicula-group {
+    display: flex;
+    position: relative;
+    transform: translateX(200px); /* Mueve ambos 200px a la derecha */
+    z-index: 2;
+}
+
+/*BOTÓN DEL TRAILER*/
+.trailer {
+    display: flex;
+    align-items:center;
+    justify-content: flex-start;
+    
+}
+
+.trailer h5{
+    margin-top: 5px;
+}
+
+.btn-trailer {
+    margin-right: 25px;
+    border: none;
+    outline: none !important;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background-color: #1310d4;
+    cursor: pointer;
+
+}
+
+.btn-trailer:hover {
+    background-color: #001652;
+    -webkit-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
+}
+.btn-trailer-icono {
+    filter: invert(100%) brightness(100%) contrast(100%);
+   
+
+}
+.btn-trailer-icono img {
+    width: 35px;
+    height: 35px;
+    margin-left: 10%;
+   
+}
+
+.btn-trailer:hover .btn-trailer-icono {
+    filter: brightness(0.5) invert(0.7);
+    -webkit-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
+}
+
+.redes-sociales {
+    display:flex;
+    flex-direction: column;
+}
+.iconos-container {
+    display: flex; 
+    gap: 10px; 
+}
+.red-social-icono {
+    height: 42px;
+    width: 42px;
+}
 @media (max-width: 800px) {
     .pelicula-container {
         flex-direction: column;
