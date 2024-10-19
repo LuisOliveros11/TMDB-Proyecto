@@ -90,7 +90,7 @@
                     <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                         Launch demo modal
                     </button> -->
-                    <div class="trailer">
+                    <div v-if="video_existe" class="trailer">
                         <button type="button" class="btn-trailer" data-toggle="modal" data-target="#exampleModal">
                             <div class="btn-trailer-icono">
                                 <img src="/img/icono_play.svg" alt="">
@@ -171,12 +171,32 @@
                                 <a :href="'https://www.instagram.com/' + instagram_link" target="_blank"><img src="/img/icon/icono_instagram.png" alt="instagram" class="red-social-icono"></a>
                             </div>
                         </div>
-                        
-                        
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem quasi iure, quod ipsa non
-                        eligendi obcaecati cupiditate nam provident illo nemo, nihil amet doloremque nesciunt
-                        reprehenderit, doloribus ad. Harum, cumque?</p>
+
+                    <h5>Palabras clave</h5>
+                    <div v-if="contador_palabras_clave > 0" class="palabras-clave">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="btn-container">
+                                    <button @click="guardar_id_palabra_clave(palabra.id)" v-for="(palabra, index) in palabras_clave.slice(0, mitad_palabras_clave)" :key="palabra.id" class="btn-palabra-clave">
+                                        <p>{{palabra.name}}</p>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="btn-container">
+                                    <button v-for="(palabra, index) in palabras_clave.slice(mitad_palabras_clave)" :key="palabra.id" class="btn-palabra-clave">
+                                        <p>{{palabra.name}}</p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <p>No hay palabras clave</p>
+                    </div>
+                   
+                    
                 </div>
             </div>
         </div>
@@ -257,9 +277,10 @@
                 generos: "",
                 casting: [],
                 actores: [],
-                serie_videos: [],
+                serie_videos: [], video_existe: true,
                 redes_sociales: [], facebook_link: "", twitter_link: "", instagram_link: "", redes_contador: 0, //Si hay al menos una red, mostrar el texto de redes sociales con el contador
                 facebook: false, twitter: false, instagram: false, //Si son ture, entonces mostrar sus imagenes en el html
+                palabras_clave: [], contador_palabras_clave: 0, mitad_palabras_clave: 0, //Para llenar las columnas de las palabras clave por igual
                 serie_video_src: "",
                 contador_modal: 0,
                 modal_bandera: false
@@ -411,11 +432,17 @@
                             console.log("Video: " + element.key);
                             this.serie_video_src = element.key;
                             console.log("Video: " + this.serie_video_src);
+                           
                             bandera = true
+
                         }
 
                     });
                     console.log("Video: " + this.serie_video_src);
+
+                    if (this.serie_video_src == "") {
+                        this.video_existe = false;
+                    }
                 } catch (error) {
                     console.error(error);
                 }
@@ -470,9 +497,36 @@
                     console.error(error);
                 }
             },
+            async obtener_palabras_clave() {
+                const url = `https://api.themoviedb.org/3/tv/${this.pelicula.id}/keywords?api_key=9cf1198f36410ea23852c01c0c427731`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+                    const json = await response.json();
+
+                    json.results.forEach(palabra_clave => {
+                        this.palabras_clave.push({name: palabra_clave.name, id: palabra_clave.id})
+                        this.contador_palabras_clave++;
+                    });
+                    this.mitad_palabras_clave = this.contador_palabras_clave / 2; //Se asigna la mitad de las palabras a la primer columna
+                    this.palabras_clave.forEach(element => {
+                        console.log("palabra clave: " + element.name)
+                        
+                    });
+
+                } catch (error) {
+                    console.error(error);
+                }
+            },
             guardarDatos(genero) {
                 localStorage.setItem('generoSeleccionado', JSON.stringify(genero));
                 window.location.href = 'genero.html';
+            },
+            guardar_id_palabra_clave(palabra_clave) {
+                localStorage.setItem('palabraClaveSeleccionada', JSON.stringify(palabra_clave));
+                window.location.href = 'palabra_clave.html';
             },
             cerrarSesion() {
                 localStorage.removeItem("logeado")
@@ -498,6 +552,7 @@
             this.obtener_casting();
             this.obtener_actores();
             this.obtener_redes_sociales();
+            this.obtener_palabras_clave();
             this.obtener_rating();
             
 

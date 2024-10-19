@@ -2,11 +2,17 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
-html, body {
-    overflow-x: hidden; /* Evita el desplazamiento horizontal */
+
+html,
+body {
+    overflow-x: hidden;
+    /* Evita el desplazamiento horizontal */
     width: 100%;
 }
 
+body.modal-open {
+    padding-right: 0 !important;
+}
 
 .pelicula-container {
     background-color: rgba(0, 0, 0, 0.92);
@@ -27,7 +33,7 @@ html, body {
 
 .portada {
     width: 300px;
-    margin-left: 15vw; 
+    margin-left: 15vw;
     z-index: 2;
 }
 
@@ -39,8 +45,8 @@ html, body {
 
 .titulo {
     display: flex;
-    align-items:baseline;
-    gap: 20px; 
+    align-items: baseline;
+    gap: 20px;
 }
 
 
@@ -48,22 +54,22 @@ html, body {
 
 
 .resumen {
-    
+
     z-index: 2;
     color: white;
     text-align: left;
     width: 60vw;
     margin-left: 10vw;
-    
-    
+
+
 }
 
-.informacion-pelicula{
+.informacion-pelicula {
     margin-top: 3%;
 }
 
-.resumen-texto p{
-    height:auto;
+.resumen-texto p {
+    height: auto;
     width: 35vw;
 }
 
@@ -91,7 +97,7 @@ html, body {
 .pelicula-container h3 {
     font-weight: bold;
     color: white;
-    text-align: left; 
+    text-align: left;
 }
 
 
@@ -104,10 +110,10 @@ html, body {
 }
 
 .col {
-    flex: 1 0 30%; 
+    flex: 1 0 30%;
     box-sizing: border-box;
-    padding: 10px; 
-    text-align: center; 
+    padding: 10px;
+    text-align: center;
 }
 
 .slider {
@@ -135,7 +141,7 @@ html, body {
 }
 
 .boton-rating .btn {
-    background-color: #ffc107; 
+    background-color: #ffc107;
     margin-top: 50px;
     border: none;
     font-weight: bold;
@@ -159,23 +165,22 @@ html, body {
 
 .creador {
     display: flex;
-    flex-wrap: wrap; 
-    gap: 200px; 
+    flex-wrap: wrap;
+    gap: 200px;
 }
 
 .container-datos {
     margin-top: 20px;
 }
 
-.casting-container{
-    margin-left: 15vw; 
-    margin-right: 10vw; 
+.casting-container {
+    margin-left: 15vw;
+    margin-right: 10vw;
     margin-top: 20px;
 }
 
 .info-container {
     background-color: #f8f9fa;
-    left: vw;
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -186,13 +191,13 @@ html, body {
 .scroll-container {
     display: flex;
     overflow-x: auto;
-    padding: 20px 0; 
-   
+    padding: 20px 0;
+
 }
 
 .actor-card {
-    flex: 0 0 auto; 
-    width: 200px; 
+    flex: 0 0 auto;
+    width: 200px;
     margin-right: 15px;
 }
 
@@ -213,19 +218,20 @@ html, body {
 .pelicula-group {
     display: flex;
     position: relative;
-    transform: translateX(200px); /* Mueve ambos 200px a la derecha */
+    transform: translateX(200px);
+    /* Mueve ambos 200px a la derecha */
     z-index: 2;
 }
 
 /*BOTÓN DEL TRAILER*/
 .trailer {
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: flex-start;
-    
+
 }
 
-.trailer h5{
+.trailer h5 {
     margin-top: 5px;
 }
 
@@ -247,16 +253,18 @@ html, body {
     -ms-transition: background-color 300ms linear;
     transition: background-color 300ms linear;
 }
+
 .btn-trailer-icono {
     filter: invert(100%) brightness(100%) contrast(100%);
-   
+
 
 }
+
 .btn-trailer-icono img {
     width: 35px;
     height: 35px;
     margin-left: 10%;
-   
+
 }
 
 .btn-trailer:hover .btn-trailer-icono {
@@ -267,32 +275,72 @@ html, body {
 }
 
 .redes-sociales {
-    display:flex;
+    display: flex;
     flex-direction: column;
 }
+
 .iconos-container {
-    display: flex; 
-    gap: 10px; 
+    display: flex;
+    gap: 10px;
 }
+
 .red-social-icono {
     height: 42px;
     width: 42px;
 }
+
+/*PALABRAS CLAVE*/
+.btn-palabra-clave {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    width: auto;
+    text-align: center;
+}
+
+.btn-palabra-clave p {
+    margin: 0;
+    font-size: 9px;
+    line-height: 1.2;
+}
+
+.btn-palabra-clave:hover {
+    background-color: #dfe4ea;
+}
+
+.btn-palabra-clave:active {
+    background-color: #bfc8d1;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: fit-content;
+}
+
+
 @media (max-width: 800px) {
     .pelicula-container {
         flex-direction: column;
-        align-items: center; 
+        align-items: center;
     }
+
     .pelicula-container-img {
-        width: 100vw; 
-        height: auto; 
+        width: 100vw;
+        height: auto;
     }
+
     .portada {
-        width: 100%; 
+        width: 100%;
         margin-right: 0;
     }
+
     .portada img {
-        width: 100%; 
-        height: auto; 
+        width: 100%;
+        height: auto;
     }
 }
