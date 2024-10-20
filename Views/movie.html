@@ -76,7 +76,8 @@
             </div>
 
             <div class="resumen">
-                <h1>{{ pelicula_detalles.original_name }}</h1>
+                <h1>{{ pelicula_detalles.title }}</h1>
+
                 <div>
                     <span v-for="(genero, index) in pelicula_detalles.genres" :key="index">
                         <a href="#" class="generos" @click="guardarDatos(genero.id)">
@@ -86,13 +87,7 @@
                     </span>
                 </div>
 
-                <!-- <div class="rating-circle">
-                    <span>{{ pelicula.rating !== undefined ? pelicula.rating : 0 }}</span>
-                </div>
 
-                <div class="play-trailer">
-                    <i class="icon-control-play" @click="mostrarTrailer"></i>  
-                </div> -->
                 <div class="rating-trailer-container">
                     <div class="rating-circle">
                         <span>{{ pelicula.rating !== undefined ? pelicula.rating : 0 }}</span>
@@ -103,7 +98,7 @@
                     </div>
 
                 </div>
-                
+
 
                 <h3>Resumen</h3>
                 <div class="resumen-texto">
@@ -137,9 +132,19 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="btn-container">
-                                    <button @click="guardarClave(palabra.id)" v-for="(palabra, index) in palabrasClave"
+                                    <button @click="guardarClave(palabra.id)"
+                                        v-for="(palabra, index) in palabrasClave.slice(0, mitad_palabras_clave)"
                                         :key="palabra.id" class="btn-palabra-clave">
-                                        <p>{{ palabra.name }}</p>
+                                        <p>{{palabra.name}}</p>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="btn-container">
+                                    <button @click="guardarClave(palabra.id)"
+                                        v-for="(palabra, index) in palabrasClave.slice(mitad_palabras_clave)"
+                                        :key="palabra.id" class="btn-palabra-clave">
+                                        <p>{{palabra.name}}</p>
                                     </button>
                                 </div>
                             </div>
@@ -234,6 +239,8 @@
                 casting: [],
                 palabrasClave: [],
                 peliculasRecomendadas: [],
+                contador_palabras_clave: 0,
+                mitad_palabras_clave: 0,
                 trailerUrl: "",
                 isFavorita: false,
             };
@@ -311,7 +318,7 @@
                     .then(json => {
                         this.pelicula_detalles = json;
                         this.generos = this.pelicula_detalles.genres.map(genero => genero.name).join(', ');
-                        this.verificarFavorito();
+                        console.log(response)
                     })
                     .catch(error => {
                         console.error('Error en la solicitud:', error);
@@ -334,21 +341,27 @@
                         console.error('Error en la solicitud:', error);
                     });
             },
+           
             obtenerPalabrasClave() {
                 fetch(`https://api.themoviedb.org/3/movie/${this.pelicula.id}/keywords?api_key=9cf1198f36410ea23852c01c0c427731`)
                     .then(response => response.json())
                     .then(json => {
-                        this.palabrasClave = json.keywords;
+                        json.keywords.forEach(keyword => {
+                            this.palabrasClave.push({ name: keyword.name, id: keyword.id });
+                            this.contador_palabras_clave++;
+                        });
+                        this.mitad_palabras_clave = Math.ceil(this.contador_palabras_clave / 2);
                     })
                     .catch(error => {
                         console.error('Error al obtener las palabras clave:', error);
                     });
             },
+
             obtenerPeliculasRecomendadas() {
                 fetch(`https://api.themoviedb.org/3/movie/${this.pelicula.id}/recommendations?&api_key=9cf1198f36410ea23852c01c0c427731`)
                     .then(response => response.json())
                     .then(json => {
-                        this.peliculasRecomendadas = json.results.slice(0, 10);  
+                        this.peliculasRecomendadas = json.results.slice(0, 10);
                     })
                     .catch(error => {
                         console.error('Error al obtener las películas recomendadas:', error);
@@ -387,7 +400,7 @@
                 localStorage.setItem('peliculaSeleccionada', JSON.stringify(pelicula));
                 window.location.href = 'movie.html';
             },
-            
+
 
         },
         async mounted() {
@@ -405,7 +418,7 @@
             this.obtenerRating();
             this.obtenerPalabrasClave();
             this.obtenerPeliculasRecomendadas();
-           
+
 
         }
     }).mount('#app');
