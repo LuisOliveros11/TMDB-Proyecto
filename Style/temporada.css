@@ -1,0 +1,71 @@
+.episodios {
+    margin-left: 18vw;
+    margin-right: 15vw;
+    margin-top: 50px;
+}
+
+.carta-temporada {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1195px;
+    /*margin: 20px auto;*/
+    background-color: #fff;
+    margin-bottom: 20px; 
+}
+
+.carta-imagen {
+    width: 227px;
+    height: 127px;
+    border-radius: 10px 0 0 10px;
+}
+
+.carta-cuerpo {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.carta-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.carta-calificacion {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.carta-calificacion span {
+    background-color: #3d9af7;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.carta-episodios {
+    color: #666;
+    font-size: 14px;
+}
+
+.carta-texto {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.carta-info-episodio {
+    font-size: 14px;
+    color: #333;
+}
+
+.carta-info-episodio a {
+    text-decoration: none;
+    color: #007bff;
+}

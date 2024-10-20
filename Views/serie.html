@@ -146,7 +146,7 @@
                     <!-- CASTING Y TEMPORADAS -->
                     <div class="scroll-container">
                         <div class="actor-card" v-for="(actor, index) in actores" :key="index">
-                            <img v-if="actor.profile_path" :src="actor.profile_path" alt="Imagen del Actor"
+                            <img @click="guardar_artista(actor.id)" v-if="actor.profile_path" :src="actor.profile_path" alt="Imagen del Actor"
                                 class="img-fluid">
                             <img v-else src="/img/placeholder.png" alt="Sin imagen disponible" class="img-fluid">
                             <h4>{{ actor.name }}</h4>
@@ -162,43 +162,88 @@
                         <h5 v-if="redes_contador > 0">Redes sociales</h5>
                         <div class="iconos-container">
                             <div v-if="facebook">
-                                <a :href="'https://www.facebook.com/' + facebook_link" target="_blank"><img src="/img/icon/icono_facebook.png" alt="facebook" class="red-social-icono"></a>
+                                <a :href="'https://www.facebook.com/' + facebook_link" target="_blank">
+                                    <img src="/img/icon/icono_facebook.png" alt="facebook" class="red-social-icono">
+                                </a>
                             </div>
                             <div v-if="twitter">
-                                <a :href="'https://www.twitter.com/' + twitter_link" target="_blank"><img src="/img/icon/icono_twitter.png" alt="twitter" class="red-social-icono"></a>
+                                <a :href="'https://www.twitter.com/' + twitter_link" target="_blank">
+                                    <img src="/img/icon/icono_twitter.png" alt="twitter" class="red-social-icono">
+                                </a>
                             </div>
                             <div v-if="instagram">
-                                <a :href="'https://www.instagram.com/' + instagram_link" target="_blank"><img src="/img/icon/icono_instagram.png" alt="instagram" class="red-social-icono"></a>
+                                <a :href="'https://www.instagram.com/' + instagram_link" target="_blank">
+                                    <img src="/img/icon/icono_instagram.png" alt="instagram" class="red-social-icono">
+                                </a>
                             </div>
                         </div>
                     </div>
-
+                
                     <h5>Palabras clave</h5>
                     <div v-if="contador_palabras_clave > 0" class="palabras-clave">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="btn-container">
-                                    <button @click="guardar_id_palabra_clave(palabra.id)" v-for="(palabra, index) in palabras_clave.slice(0, mitad_palabras_clave)" :key="palabra.id" class="btn-palabra-clave">
+                                    <button @click="guardar_id_palabra_clave(palabra.id)"
+                                        v-for="(palabra, index) in palabras_clave.slice(0, mitad_palabras_clave)"
+                                        :key="palabra.id" class="btn-palabra-clave">
                                         <p>{{palabra.name}}</p>
                                     </button>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="btn-container">
-                                    <button @click="guardar_id_palabra_clave(palabra.id)" v-for="(palabra, index) in palabras_clave.slice(mitad_palabras_clave)" :key="palabra.id" class="btn-palabra-clave">
+                                    <button @click="guardar_id_palabra_clave(palabra.id)"
+                                        v-for="(palabra, index) in palabras_clave.slice(mitad_palabras_clave)"
+                                        :key="palabra.id" class="btn-palabra-clave">
                                         <p>{{palabra.name}}</p>
                                     </button>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                     <div v-else>
                         <p>No hay palabras clave</p>
                     </div>
-                   
-                    
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-10">
+                    <h4>Ultima temporada</h4>
+                    <div class="carta-temporada" v-for="temporada in ultima_temporada" :key="temporada.id">
+                        <img @click="guardar_numero_temporada(temporada.season_number)" class="carta-imagen" :src="'https://image.tmdb.org/t/p/w500/' + temporada.poster_path"
+                            alt="poster">
+                        <div class="carta-cuerpo">
+                            <div>
+                                <h2 class="carta-titulo">{{temporada.name}}</h2>
+                                <div class="carta-calificacion">
+                                    <span>⭐ {{rating_ultima_temporada}}%</span>
+                                    <div class="carta-episodios">{{temporada.air_date}} • {{temporada.episodes.length}}
+                                        episodios</div>
+                                </div>
+                                <div v-if="ultima_temporada_existe_overview">
+                                    <p class="carta-texto">{{temporada.overview}}</p>
+
+                                </div>
+                                <div v-else>
+                                    <p class="carta-texto">Aún no hay una descripción...</p>
+
+                                </div>
+
+                            </div>
+                            <div v-for="episodio in ultimo_episodio" :key="episodio.id" class="carta-info-episodio">
+                                <span>📅 </span><a href="#">Episodio {{episodio.episode_number}} ({{temporada.season_number}}x{{episodio.episode_number}}, {{episodio.air_date}})</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
         </div>
 
 
@@ -207,7 +252,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ratingModalLabel">Selecciona tu calificación</h5>
+                        <h5 class="modal-title text-dark" id="ratingModalLabel">Selecciona tu calificación</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                             @click="cerrarModal">
                             <span aria-hidden="true">&times;</span>
@@ -215,7 +260,7 @@
                     </div>
                     <div class="modal-body">
                         <input type="range" id="rating" v-model="rating" min="1" max="10" step="0.5" class="slider">
-                        <p>Calificación: {{ rating }}</p>
+                        <p class="text-dark">Calificación: {{ rating }}</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
@@ -281,6 +326,9 @@
                 redes_sociales: [], facebook_link: "", twitter_link: "", instagram_link: "", redes_contador: 0, //Si hay al menos una red, mostrar el texto de redes sociales con el contador
                 facebook: false, twitter: false, instagram: false, //Si son ture, entonces mostrar sus imagenes en el html
                 palabras_clave: [], contador_palabras_clave: 0, mitad_palabras_clave: 0, //Para llenar las columnas de las palabras clave por igual
+                temporadas: [], numero_temporada: 1,
+                ultima_temporada: [], rating_ultima_temporada: 0, ultima_temporada_existe_overview: true,
+                ultimo_episodio: [],
                 serie_video_src: "",
                 contador_modal: 0,
                 modal_bandera: false
@@ -403,6 +451,7 @@
                         this.actores = json.cast.slice(0, 20).map(actor => ({
                             name: actor.name,
                             character: actor.character,
+                            id: actor.id,
                             profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : null,
                         }));
                     })
@@ -432,7 +481,7 @@
                             console.log("Video: " + element.key);
                             this.serie_video_src = element.key;
                             console.log("Video: " + this.serie_video_src);
-                           
+
                             bandera = true
 
                         }
@@ -475,21 +524,21 @@
 
                     this.redes_sociales.forEach(red_social => {
                         console.log("red: " + red_social.id)
-                        if(red_social.name = "Facebook"){
+                        if (red_social.name = "Facebook") {
                             this.facebook_link = red_social.id;
                             this.redes_contador++;
                         }
-                        if(red_social.name = "Twitter"){
+                        if (red_social.name = "Twitter") {
                             this.twitter_link = red_social.id;
                             this.redes_contador++;
 
                         }
-                        if(red_social.name = "Instagram"){
+                        if (red_social.name = "Instagram") {
                             this.instagram_link = red_social.id;
                             this.redes_contador++;
 
                         }
-                        
+
                     });
                     console.log(this.facebook_link)
 
@@ -507,17 +556,69 @@
                     const json = await response.json();
 
                     json.results.forEach(palabra_clave => {
-                        this.palabras_clave.push({name: palabra_clave.name, id: palabra_clave.id})
+                        this.palabras_clave.push({ name: palabra_clave.name, id: palabra_clave.id })
                         this.contador_palabras_clave++;
                     });
                     this.mitad_palabras_clave = this.contador_palabras_clave / 2; //Se asigna la mitad de las palabras a la primer columna
                     this.palabras_clave.forEach(element => {
                         console.log("palabra clave: " + element.name)
-                        
+
                     });
 
                 } catch (error) {
                     console.error(error);
+                }
+            },
+            async obtener_temporadas() {
+                let continuar = true;
+                let ultimo_episodio_encontrado = false;
+
+                while (continuar) {
+                    const url = `https://api.themoviedb.org/3/tv/${this.pelicula.id}/season/${this.numero_temporada}?api_key=9cf1198f36410ea23852c01c0c427731`;
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(`Response status: ${response.status}`);
+                        }
+                        const json = await response.json();
+
+                        if (json && json.id) {
+                            //Si hay datos de la temporada, se agregan al array
+                            this.temporadas.push(json);
+                            this.ultima_temporada = []; //Se limpia el contenido de la temporada para que solo almacene la última
+                            this.ultima_temporada.push(json);
+                            this.numero_temporada++;
+                        } else {
+                            continuar = false; //Si no hay más temporadas, detener el ciclo
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        this.temporadas.forEach(temporada => {
+                            console.log("Temporada: " + temporada.name)
+
+                        });
+                        this.ultima_temporada.forEach(temporada => {
+                            this.rating_ultima_temporada = Math.round(temporada.vote_average * 100) / 10;
+                            console.log("runtime: " + temporada.episodes.runtime)
+                            if (temporada.overview == "") {
+                                this.ultima_temporada_existe_overview = false;
+                            }
+                            temporada.episodes.forEach(episodio => {
+                               
+                                if(episodio.runtime == null && ultimo_episodio_encontrado == false) {
+                                    console.log("ENTRO AL IF DEL ULTIMO EPISODIO")
+                                    this.ultimo_episodio.push(episodio)
+                                    ultimo_episodio_encontrado = true;
+                                }
+                            });
+                        });
+                        this.ultimo_episodio.forEach(element => {
+                                console.log("Ultimo capitulo: " + element.name)
+                                
+                            });
+                        continuar = false; //En caso de error, detener el ciclo
+                    }
+
                 }
             },
             guardarDatos(genero) {
@@ -527,6 +628,15 @@
             guardar_id_palabra_clave(palabra_clave) {
                 localStorage.setItem('palabraClaveSeleccionada', JSON.stringify(palabra_clave));
                 window.location.href = 'palabra_clave.html';
+            },
+            guardar_numero_temporada(temporada) {
+                localStorage.setItem('temporadaSeleccionada2', temporada);
+                localStorage.setItem('serieSeleccionadaId', this.pelicula.id)
+                window.location.href = 'temporada.html';
+            },
+            guardar_artista(artista) {
+                localStorage.setItem('artistaSeleccionado', artista)
+                window.location.href = 'artista.html';
             },
             cerrarSesion() {
                 localStorage.removeItem("logeado")
@@ -554,12 +664,7 @@
             this.obtener_redes_sociales();
             this.obtener_palabras_clave();
             this.obtener_rating();
-            
-
-
-            //CARGAR Y DEJAR DE REPRODUCIR EL VIDEO AL ABRIR O CERRAR EL MODAL
-
-
+            this.obtener_temporadas();
 
         }
     }).mount('#app');
