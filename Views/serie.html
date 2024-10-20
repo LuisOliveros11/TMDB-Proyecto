@@ -157,55 +157,58 @@
 
                 <!-- PANEL DERECHO -->
                 <div class="col-md-2 info-container">
-                    <h3>Información Extra</h3>
-                    <div class="redes-sociales">
-                        <h5 v-if="redes_contador > 0">Redes sociales</h5>
-                        <div class="iconos-container">
-                            <div v-if="facebook">
-                                <a :href="'https://www.facebook.com/' + facebook_link" target="_blank">
-                                    <img src="/img/icon/icono_facebook.png" alt="facebook" class="red-social-icono">
-                                </a>
-                            </div>
-                            <div v-if="twitter">
-                                <a :href="'https://www.twitter.com/' + twitter_link" target="_blank">
-                                    <img src="/img/icon/icono_twitter.png" alt="twitter" class="red-social-icono">
-                                </a>
-                            </div>
-                            <div v-if="instagram">
-                                <a :href="'https://www.instagram.com/' + instagram_link" target="_blank">
-                                    <img src="/img/icon/icono_instagram.png" alt="instagram" class="red-social-icono">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <h5>Palabras clave</h5>
-                    <div v-if="contador_palabras_clave > 0" class="palabras-clave">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="btn-container">
-                                    <button @click="guardar_id_palabra_clave(palabra.id)"
-                                        v-for="(palabra, index) in palabras_clave.slice(0, mitad_palabras_clave)"
-                                        :key="palabra.id" class="btn-palabra-clave">
-                                        <p>{{palabra.name}}</p>
-                                    </button>
+                    <div class="panel-derecho">
+                        <h3>Información Extra</h3>
+                        <div class="redes-sociales">
+                            <h5 v-if="redes_contador > 0">Redes sociales</h5>
+                            <div class="iconos-container">
+                                <div v-if="facebook">
+                                    <a :href="'https://www.facebook.com/' + facebook_link" target="_blank">
+                                        <img src="/img/icon/icono_facebook.png" alt="facebook" class="red-social-icono">
+                                    </a>
+                                </div>
+                                <div v-if="twitter">
+                                    <a :href="'https://www.twitter.com/' + twitter_link" target="_blank">
+                                        <img src="/img/icon/icono_twitter.png" alt="twitter" class="red-social-icono">
+                                    </a>
+                                </div>
+                                <div v-if="instagram">
+                                    <a :href="'https://www.instagram.com/' + instagram_link" target="_blank">
+                                        <img src="/img/icon/icono_instagram.png" alt="instagram" class="red-social-icono">
+                                    </a>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="btn-container">
-                                    <button @click="guardar_id_palabra_clave(palabra.id)"
-                                        v-for="(palabra, index) in palabras_clave.slice(mitad_palabras_clave)"
-                                        :key="palabra.id" class="btn-palabra-clave">
-                                        <p>{{palabra.name}}</p>
-                                    </button>
+                        </div>
+                    
+                        <h5>Palabras clave</h5>
+                        <div v-if="contador_palabras_clave > 0" class="palabras-clave">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="btn-container">
+                                        <button @click="guardar_id_palabra_clave(palabra.id)"
+                                            v-for="(palabra, index) in palabras_clave.slice(0, mitad_palabras_clave)"
+                                            :key="palabra.id" class="btn-palabra-clave">
+                                            <p>{{palabra.name}}</p>
+                                        </button>
+                                    </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="btn-container">
+                                        <button @click="guardar_id_palabra_clave(palabra.id)"
+                                            v-for="(palabra, index) in palabras_clave.slice(mitad_palabras_clave)"
+                                            :key="palabra.id" class="btn-palabra-clave">
+                                            <p>{{palabra.name}}</p>
+                                        </button>
+                                    </div>
+                                </div>
+                                
                             </div>
-                            
+                        </div>
+                        <div v-else>
+                            <p>No hay palabras clave</p>
                         </div>
                     </div>
-                    <div v-else>
-                        <p>No hay palabras clave</p>
-                    </div>
+                   
                 </div>
             </div>
 
@@ -234,7 +237,7 @@
 
                             </div>
                             <div v-for="episodio in ultimo_episodio" :key="episodio.id" class="carta-info-episodio">
-                                <span>📅 </span><a href="#">Episodio {{episodio.episode_number}} ({{temporada.season_number}}x{{episodio.episode_number}}, {{episodio.air_date}})</a>
+                                <span>📅 </span><a>Episodio {{episodio.episode_number}} ({{temporada.season_number}}x{{episodio.episode_number}}, {{episodio.air_date}})</a>
                             </div>
                         </div>
                     </div>

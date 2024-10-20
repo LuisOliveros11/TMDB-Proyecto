@@ -7,8 +7,9 @@
     <title>Detalles de la Serie</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="/Style/temporada.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
-        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/Style/navbar.css">
 
@@ -57,24 +58,61 @@
             </div>
         </div>
 
-        <div class="episodios">
-
-            <h4>Episodios</h4>
-                    <div class="carta-temporada" v-for="episodio in episodios" :key="episodio.id">
-                        <img v-if="episodio.still_path != null" class="carta-imagen" :src="'https://image.tmdb.org/t/p/w500/' + episodio.still_path" alt="poster">
-                        <img v-else class="carta-imagen" src="/img/img_no_disponible.jpg" alt="poster">
-                        <div class="carta-cuerpo">
-                            <div>
-                                <h6 class="carta-titulo">{{episodio.name}}</h6>
-                               
-
-                            </div>
-                            
-                        </div>
-                    </div>
-
+        <div class="serie-container">
+            <div class="serie" v-for="datos in temporada" :key="datos.id">
+                <div class="temporada-imagen">
+                    <img :src="'https://image.tmdb.org/t/p/w500/' + datos.poster_path" alt="">
+                </div>
+                <div class="temporada-informacion">
+                    <h3>Temporada {{datos.season_number}} ({{datos.air_date}})</h3>
+                </div>
+            </div>
         </div>
+        
+        <div class="temporada-container">
+            <div class="cambiar-temporada" v-for="datos in temporada" :key="datos.id">
+                <div class="temporadas">
+                    <div class="flecha-con-texto">
+                        <span @click="temporada_anterior()" v-if="datos.season_number - 1 > 0" class="flecha-izquierda"></span>
+                        <span @click="temporada_anterior()" v-if="datos.season_number - 1 > 0" class="texto">Temporada anterior</span>
+                    </div>
+                    <div class="flecha-con-texto">
+                        <span @click="temporada_siguiente()" v-if="datos.season_number < total_temporadas" class="temporada-siguiente">Temporada Siguiente</span>
+                        <span @click="temporada_siguiente()" v-if="datos.season_number < total_temporadas" class="flecha-derecha"></span>
 
+                    </div>
+                                 
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="episodios">
+            <h4>Episodios</h4>
+            <div class="carta-temporada" v-for="episodio in episodios" :key="episodio.id">
+                <img v-if="episodio.still_path != null" class="carta-imagen" :src="'https://image.tmdb.org/t/p/w500/' + episodio.still_path" alt="poster">
+                <img v-else class="carta-imagen" src="/img/img_no_disponible.jpg" alt="poster">
+                <div class="carta-cuerpo">
+                    <div>
+                        <h6 class="carta-titulo">{{episodio.episode_number}}  {{ episodio.name }}</h6>
+                        <div class="rating-fecha">
+                            <div class="carta-rating">
+                                <h6>{{episodio.vote_average}}</h6>
+                            </div>
+                        </div>
+                        <p>{{episodio.overview}}</p>
+                        <hr>
+                    </div>
+                  
+                    <button class="btn-expandir" @click="toggleExpandir(episodio)">
+                        {{ episodio.expandido ? 'Mostrar menos' : 'Mostrar más' }}
+                    </button>
+                    <div :class="['carta-info-expandida', { expandido: episodio.expandido }]">
+                        <p>{{ episodio.overview }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -96,9 +134,8 @@
             return {
                 temporada_numero: localStorage.getItem("temporadaSeleccionada2"),
                 serie_id: localStorage.getItem("serieSeleccionadaId"),
-                temporada: [],
-                episodios: []
-                
+                temporada: [], temporada_imagen: "", total_temporadas: 0,
+                episodios: [],                
             };
         },
         methods: {
@@ -113,11 +150,11 @@
 
                     this.temporada.push(json)
 
-                    this.temporada.forEach(temporada => {
-                        temporada.episodes.forEach(episodio => {
-                            this.episodios.push(episodio)   
-                        }); 
-                    });
+                    this.episodios = json.episodes.map(episodio => ({
+                        ...episodio,
+                        expandido: false, // Estado inicial de expansión
+                        vote_average: Math.floor(episodio.vote_average * 10)
+                    }));
                     this.episodios.forEach(element => {
                         console.log(element.name)
                         
@@ -125,7 +162,20 @@
                 } catch (error) {
                     console.error(error);
                 }
-            }
+            },
+            temporada_anterior() {
+                this.temporada_numero = this.temporada_numero - 1;
+                this.temporada = []
+                this.obtener_episodios()
+            },
+            temporada_siguiente() {
+                this.temporada_numero = this.temporada_numero + 1;
+                this.temporada = []
+                this.obtener_episodios()
+            },
+            toggleExpandir(episodio) {
+                episodio.expandido = !episodio.expandido;
+        },
        
         },
         async mounted() {
@@ -140,8 +190,14 @@
             }
             console.log("numero temporada " + this.temporada_numero)
             console.log(this.serie_id)
+            this.total_temporadas = this.temporada_numero
+            console.log("total temporadas: " + this.total_temporadas)
 
             this.obtener_episodios();
+            this.temporada.forEach(element => {
+                console.log(element.season_number)
+                
+            });
         }
     }).mount('#app');
 </script>

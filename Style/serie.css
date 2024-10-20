@@ -278,6 +278,10 @@ body.modal-open {
     transition: background-color 300ms linear;
 }
 
+/*PANEL DERECHO*/
+.panel-derecho > * {
+    margin-bottom: 25px; 
+}
 .redes-sociales {
     display: flex;
     flex-direction: column;
