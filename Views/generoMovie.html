@@ -4,20 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Series por Género</title>
+    <title>Películas por Género</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link rel="stylesheet" href="/Style/genero.css">
+    <link rel="stylesheet" href="/Style/generoMovie.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Style/navbar.css">
 </head>
 
 <body>
     <div id="app">
+        <div class="menu-superior">
+            <div class="d-flex justify-content-between align-items-center" style="height: 100%;">
+                <div class="opciones">
+                    <a href="./home.html">
+                        <img src="/img/Logo.png" class="logo">
+                    </a>
+                    <div class="opciones-dropdown">
+                        <h4>Películas</h4>
+                        <div class="dropdown">
+                            <li><a href="./Listas/Lista_Peliculas/movies_popular.html">Populares</a></li>
+                            <li><a href="./Listas/Lista_Peliculas/movies_cartelera.html">En cartelera</a></li>
+                            <li><a href="./Listas/Lista_Peliculas/movies_rating.html">Mejor calificados</a></li>
+                        </div>
+                    </div>
+                    <div class="opciones-dropdown">
+                        <h4>Series de TV</h4>
+                        <div class="dropdown">
+                            <li><a href="./Listas/Lista_series/series_popular.html">Populares</a></li>
+                            <li><a href="./Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="opciones-perfil">
+                    <div class="opciones-dropdown perfil-dropdown">
+                        <div class="button-perfil">
+                            <div class="icono-perfil">
+                                <img src="/img/perfil.png">
+                            </div>
+                        </div>
+                        <div class="dropdown-perfil">
+                            <li><a @click="cerrarSesion()">Cerrar sesión</a></li>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <h1>{{ nombreGenero }}</h1>
-        <div class="series-container">
-            <div class="serie" v-for="serie in series" :key="serie.id">
-                <img @click="irADetalles(serie)" :src="'https://image.tmdb.org/t/p/w500/' + serie.poster_path"
-                     alt="Serie Poster">
-                <h2>{{ serie.name }}</h2>
+        <div class="peliculas-container">
+            <div class="pelicula" v-for="pelicula in peliculas" :key="pelicula.id">
+                <img @click="irADetalles(pelicula)" :src="'https://image.tmdb.org/t/p/w500/' + pelicula.poster_path" alt="Pelicula Poster">
+                <h2>{{ pelicula.title }}</h2>
             </div>
             <button @click="mostrar_mas()">Mostrar más</button>
         </div>
@@ -29,31 +70,28 @@
         createApp({
             data() {
                 return {
-                    series: [],
+                    peliculas: [], 
                     nombreGenero: '',
-                    serie: JSON.parse(localStorage.getItem('serieSeleccionada')) || {},
                     pagina: 1
                 };
             },
             methods: {
-                async obtenerSeriesPorGenero(generoId) {
+                async obtenerPeliculasPorGenero(generoId) {
                     const url = `https://api.themoviedb.org/3/discover/movie?api_key=9cf1198f36410ea23852c01c0c427731&with_genres=${generoId}&page=${this.pagina}`;
                     try {
                         const response = await fetch(url);
                         if (!response.ok) throw new Error(`Response status: ${response.status}`);
                         const data = await response.json();
-                        data.results.forEach(serie => {
-                            this.series.push(serie);
-                        });
+                        this.peliculas = data.results; 
                         this.obtenerNombreGenero(generoId);
                     } catch (error) {
-                        console.error('Error al obtener series:', error);
+                        console.error('Error al obtener películas:', error);
                     }
                 },
                 mostrar_mas() {
                     const generoId = localStorage.getItem('generoSeleccionado');
                     this.pagina++;
-                    this.obtenerSeriesPorGenero(generoId);
+                    this.obtenerPeliculasPorGenero(generoId);
                 },
                 async obtenerNombreGenero(generoId) {
                     const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=9cf1198f36410ea23852c01c0c427731&language=en-US`;
@@ -67,15 +105,15 @@
                         console.error('Error al obtener el nombre del género:', error);
                     }
                 },
-                irADetalles(serie) {
-                    localStorage.setItem('serieSeleccionada', JSON.stringify(serie));
-                    window.location.href = 'serie.html';
+                irADetalles(pelicula) {
+                    localStorage.setItem('peliculaSeleccionada', JSON.stringify(pelicula));
+                    window.location.href = 'movie.html';
                 }
             },
             mounted() {
                 const generoId = localStorage.getItem('generoSeleccionado');
                 if (generoId) {
-                    this.obtenerSeriesPorGenero(generoId);
+                    this.obtenerPeliculasPorGenero(generoId);
                 } else {
                     console.error('No se encontró el género seleccionado');
                 }
