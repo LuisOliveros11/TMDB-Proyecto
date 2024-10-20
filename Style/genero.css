@@ -8,7 +8,6 @@ body {
 
 #app {
     text-align: center;
-    padding: 20px;
 }
 
 h1 {
@@ -23,6 +22,10 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+}
+
+.botonMas{
+    margin-top: 50px;
 }
 
 .serie {
