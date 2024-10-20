@@ -1,9 +1,102 @@
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+
+.serie-container {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    background-color: #424242;
+}
+
+
+
+.serie {
+    display:flex;
+    margin-left: 18%;
+    margin-right: 15%;
+    width: 100%; 
+}
+
+.temporada-imagen img {
+    width: 100px;
+    height: 120px;
+    border-radius: 8px;
+    margin-top: 1vh;
+}
+
+.temporada-informacion {
+    margin-top: 5vh;
+    margin-left: 60px;
+}
+.temporada-informacion h3{
+    color: white;
+}
+
+
+.temporada-container {
+    width: 100%;
+    height: 150px;
+    display: flex;
+}
+
+
+
+.cambiar-temporada {
+    display:flexbox;
+    width: 100vw;
+    margin-left: 18%;
+    margin-right: 18vw;
+}
+
+.temporadas {
+    display: flex;
+    justify-content: space-between; 
+    width: 100%; 
+}
+
+.flecha-con-texto {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 110px;
+    font-size: 16px; 
+    cursor: pointer;
+  }
+  
+.flecha-izquierda {
+    width: 12px; 
+    height: 12px; 
+    border-left: 3px solid black; 
+    border-top: 3px solid black; 
+    transform: rotate(-45deg); 
+    margin-right: 8px; 
+}
+
+.flecha-derecha {
+    width: 12px; 
+    height: 12px; 
+    border-left: 3px solid black; 
+    border-top: 3px solid black; 
+    transform: rotate(-225deg); 
+    margin-left: -40px;
+}
+
+.temporada-siguiente {
+    margin-left: auto; 
+    padding-right: 50px;
+}
+.temporada-anterior {
+    display: inline-block;
+}
+
 .episodios {
     margin-left: 18vw;
     margin-right: 15vw;
     margin-top: 50px;
 }
-
 .carta-temporada {
     display: flex;
     flex-direction: row;
@@ -12,10 +105,10 @@
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 1195px;
-    /*margin: 20px auto;*/
     background-color: #fff;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
+
 
 .carta-imagen {
     width: 227px;
@@ -24,11 +117,14 @@
 }
 
 .carta-cuerpo {
-    padding: 20px;
+    margin-left: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start; 
+    position: relative;
+    width: 100%;
 }
+
 
 .carta-titulo {
     font-size: 18px;
@@ -36,6 +132,40 @@
     margin-bottom: 10px;
 }
 
+.btn-expandir {
+   
+    border: none;
+    outline: none !important;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+
+}
+
+hr {
+    width: calc(100% - 20px); 
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+    position: absolute;
+    bottom: 40px; 
+}
+
+.btn-expandir:hover {
+    
+}
+
+.carta-info-expandida {
+    font-size: 14px;
+    display: none; 
+
+}
+.carta-info-expandida.expandido {
+    display: block; 
+}
 .carta-calificacion {
     display: flex;
     align-items: center;
