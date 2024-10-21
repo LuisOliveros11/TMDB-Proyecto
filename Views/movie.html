@@ -12,7 +12,6 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/Style/navbar.css">
-    <link rel="stylesheet" href="/Style/estilo.css">
     <link rel="stylesheet" href="/Style/movie.css">
 
 </head>
@@ -210,6 +209,21 @@
     crossorigin="anonymous"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const perfilButton = document.querySelector('.button-perfil');
+        const dropdownMenu = document.querySelector('.perfil-dropdown .dropdown-perfil');
+
+        perfilButton.addEventListener('click', function () {
+            dropdownMenu.classList.toggle('active');
+        });
+
+        // Cerrar el dropdown si se hace clic fuera
+        document.addEventListener('click', function (e) {
+            if (!perfilButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+            }
+        });
+    });
     const { createApp } = Vue;
 
     createApp({
