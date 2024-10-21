@@ -7,7 +7,8 @@
     <title>Detalles de la Serie</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="/Style/temporada.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -68,52 +69,77 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="temporada-container">
             <div class="cambiar-temporada" v-for="datos in temporada" :key="datos.id">
                 <div class="temporadas">
                     <div class="flecha-con-texto">
-                        <span @click="temporada_anterior()" v-if="datos.season_number - 1 > 0" class="flecha-izquierda"></span>
-                        <span @click="temporada_anterior()" v-if="datos.season_number - 1 > 0" class="texto">Temporada anterior</span>
+                        <span @click="temporada_anterior()" v-if="datos.season_number - 1 > 0"
+                            class="flecha-izquierda"></span>
+                        <span @click="temporada_anterior()" v-if="datos.season_number - 1 > 0" class="texto">Temporada
+                            anterior</span>
                     </div>
                     <div class="flecha-con-texto">
-                        <span @click="temporada_siguiente()" v-if="datos.season_number < total_temporadas" class="temporada-siguiente">Temporada Siguiente</span>
-                        <span @click="temporada_siguiente()" v-if="datos.season_number < total_temporadas" class="flecha-derecha"></span>
-
+                        <span @click="temporada_siguiente()" v-if="datos.season_number < total_temporadas"
+                            class="temporada-siguiente">Temporada Siguiente</span>
+                        <span @click="temporada_siguiente()" v-if="datos.season_number < total_temporadas"
+                            class="flecha-derecha"></span>
                     </div>
-                                 
+
                 </div>
             </div>
         </div>
-        
+
 
         <div class="episodios">
             <h4>Episodios</h4>
             <div class="carta-temporada" v-for="episodio in episodios" :key="episodio.id">
-                <img v-if="episodio.still_path != null" class="carta-imagen" :src="'https://image.tmdb.org/t/p/w500/' + episodio.still_path" alt="poster">
+                <img v-if="episodio.still_path != null" class="carta-imagen"
+                    :src="'https://image.tmdb.org/t/p/w500/' + episodio.still_path" alt="poster">
                 <img v-else class="carta-imagen" src="/img/img_no_disponible.jpg" alt="poster">
                 <div class="carta-cuerpo">
                     <div>
-                        <h6 class="carta-titulo">{{episodio.episode_number}}  {{ episodio.name }}</h6>
+                        <h6 class="carta-titulo">{{episodio.episode_number}} {{ episodio.name }}</h6>
                         <div class="rating-fecha">
                             <div class="carta-rating">
                                 <h6>{{episodio.vote_average}}</h6>
                             </div>
                         </div>
+                        
                         <p>{{episodio.overview}}</p>
-                        <hr>
+                        
                     </div>
-                  
+
                     <button class="btn-expandir" @click="toggleExpandir(episodio)">
                         {{ episodio.expandido ? 'Mostrar menos' : 'Mostrar más' }}
                     </button>
                     <div :class="['carta-info-expandida', { expandido: episodio.expandido }]">
-                        <p>{{ episodio.overview }}</p>
+                        <h6>Estrellas invitadas</h6>
+                        <div class="row">
+                            <div class="col-md-4" v-for="estrella in estrellas_por_episodio[episodio.id]"
+                                :key="estrella.id">
+                                <div class="estrella-info">
+                                    <div class="estrella-img">
+                                        <img :src="'https://image.tmdb.org/t/p/w500/' + estrella.profile_path"
+                                            alt="Imagen de la estrella invitada">
+                                    </div>
+                                    <div class="estrella-detalles">
+                                        <h6>{{ estrella.name }}</h6>
+                                        <p>{{ estrella.character }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
     </div>
+
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
@@ -135,7 +161,9 @@
                 temporada_numero: localStorage.getItem("temporadaSeleccionada2"),
                 serie_id: localStorage.getItem("serieSeleccionadaId"),
                 temporada: [], temporada_imagen: "", total_temporadas: 0,
-                episodios: [],                
+                episodios: [],
+                estrellas_invitadas: [], total_estrellas_invitadas: 0, columna_estrellas_invitadas: 0, estrellas_por_episodio: [],
+                estrellas_primera_columna: [], estrellas_segunda_columna: [], estrellas_tercera_columna: []
             };
         },
         methods: {
@@ -152,13 +180,24 @@
 
                     this.episodios = json.episodes.map(episodio => ({
                         ...episodio,
-                        expandido: false, // Estado inicial de expansión
+                        expandido: false, //expansion de la carta
                         vote_average: Math.floor(episodio.vote_average * 10)
                     }));
-                    this.episodios.forEach(element => {
-                        console.log(element.name)
-                        
+
+                    //Añadir a los invitados especiales
+                    json.episodes.forEach(episodio => {
+                        //mostrar solo las estrellas con imagen de perfil
+                        this.estrellas_por_episodio[episodio.id] = episodio.guest_stars.filter(estrella => estrella.profile_path != null);
                     });
+
+
+                    this.columna_estrellas_invitadas = Math.ceil(this.estrellas_invitadas.length / 3);
+
+                    console.log("columna " + this.columna_estrellas_invitadas)
+                    let contador = 0
+
+
+
                 } catch (error) {
                     console.error(error);
                 }
@@ -175,8 +214,8 @@
             },
             toggleExpandir(episodio) {
                 episodio.expandido = !episodio.expandido;
-        },
-       
+            },
+
         },
         async mounted() {
             let logeado = localStorage.getItem("logeado");
@@ -196,7 +235,7 @@
             this.obtener_episodios();
             this.temporada.forEach(element => {
                 console.log(element.season_number)
-                
+
             });
         }
     }).mount('#app');

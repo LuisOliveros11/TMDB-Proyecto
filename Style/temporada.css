@@ -15,10 +15,10 @@ body {
 
 
 .serie {
-    display:flex;
+    display: flex;
     margin-left: 18%;
     margin-right: 15%;
-    width: 100%; 
+    width: 100%;
 }
 
 .temporada-imagen img {
@@ -32,7 +32,8 @@ body {
     margin-top: 5vh;
     margin-left: 60px;
 }
-.temporada-informacion h3{
+
+.temporada-informacion h3 {
     color: white;
 }
 
@@ -46,7 +47,7 @@ body {
 
 
 .cambiar-temporada {
-    display:flexbox;
+    display: flexbox;
     width: 100vw;
     margin-left: 18%;
     margin-right: 18vw;
@@ -54,40 +55,41 @@ body {
 
 .temporadas {
     display: flex;
-    justify-content: space-between; 
-    width: 100%; 
+    justify-content: space-between;
+    width: 100%;
 }
 
 .flecha-con-texto {
     display: flex;
-    align-items: center; 
+    align-items: center;
     margin-bottom: 110px;
-    font-size: 16px; 
+    font-size: 16px;
     cursor: pointer;
-  }
-  
+}
+
 .flecha-izquierda {
-    width: 12px; 
-    height: 12px; 
-    border-left: 3px solid black; 
-    border-top: 3px solid black; 
-    transform: rotate(-45deg); 
-    margin-right: 8px; 
+    width: 12px;
+    height: 12px;
+    border-left: 3px solid black;
+    border-top: 3px solid black;
+    transform: rotate(-45deg);
+    margin-right: 8px;
 }
 
 .flecha-derecha {
-    width: 12px; 
-    height: 12px; 
-    border-left: 3px solid black; 
-    border-top: 3px solid black; 
-    transform: rotate(-225deg); 
+    width: 12px;
+    height: 12px;
+    border-left: 3px solid black;
+    border-top: 3px solid black;
+    transform: rotate(-225deg);
     margin-left: -40px;
 }
 
 .temporada-siguiente {
-    margin-left: auto; 
+    margin-left: auto;
     padding-right: 50px;
 }
+
 .temporada-anterior {
     display: inline-block;
 }
@@ -95,8 +97,8 @@ body {
 .episodios {
     margin-left: 18vw;
     margin-right: 15vw;
-    margin-top: 50px;
 }
+
 .carta-temporada {
     display: flex;
     flex-direction: row;
@@ -120,7 +122,7 @@ body {
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     position: relative;
     width: 100%;
 }
@@ -133,7 +135,7 @@ body {
 }
 
 .btn-expandir {
-   
+
     border: none;
     outline: none !important;
     background-color: white;
@@ -146,26 +148,26 @@ body {
 }
 
 hr {
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px);
     margin: 10px 0;
     border: 0;
     border-top: 1px solid #ddd;
     position: absolute;
-    bottom: 40px; 
+    bottom: 40px;
 }
 
-.btn-expandir:hover {
-    
-}
+.btn-expandir:hover {}
 
 .carta-info-expandida {
     font-size: 14px;
-    display: none; 
+    display: none;
 
 }
+
 .carta-info-expandida.expandido {
-    display: block; 
+    display: block;
 }
+
 .carta-calificacion {
     display: flex;
     align-items: center;
@@ -198,4 +200,32 @@ hr {
 .carta-info-episodio a {
     text-decoration: none;
     color: #007bff;
+}
+
+.estrella-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.estrella-img {
+    margin-right: 15px;
+}
+
+.estrella-detalles h6 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.estrella-detalles p {
+    margin: 0;
+    font-size: 14px;
+    color: gray;
+}
+
+.estrella-img img {
+    margin-bottom: 40px;
+    border-radius: 10px;
+    width: 66px;
+    height: 66px;
 }
