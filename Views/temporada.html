@@ -25,8 +25,8 @@
                     <a href="./home.html">
                         <img src="/img/Logo.png" class="logo">
                     </a>
-                  
-                   
+
+
                 </div>
 
                 <div class="opciones-perfil">
@@ -88,15 +88,15 @@
                         <h6 class="carta-titulo">{{episodio.episode_number}} {{ episodio.name }}</h6>
                         <div class="rating-fecha">
                             <div class="carta-rating">
-                                <h6>⭐ {{episodio.vote_average}}% </h6> 
+                                <h6>⭐ {{episodio.vote_average}}% </h6>
                             </div>
                             <div class="carta-datos">
                                 <h6>{{episodio.air_date}} • {{episodio.runtime}}m</h6>
                             </div>
                         </div>
-                        
+
                         <p>{{episodio.overview}}</p>
-                        
+
                     </div>
 
                     <button class="btn-expandir" @click="toggleExpandir(episodio)">
@@ -204,7 +204,7 @@
                     this.serie = json;
                     this.guardar_serie(this.serie)
 
-                    
+
                 } catch (error) {
                     console.error(error);
                 }
@@ -227,6 +227,13 @@
                 localStorage.setItem('serieSeleccionada', JSON.stringify(serie));
                 window.location.href = 'serie.html';
             },
+            cerrarSesion() {
+                localStorage.removeItem("logeado")
+                localStorage.removeItem('usuario',);
+                localStorage.removeItem('session_id',);
+                localStorage.removeItem('request_token',);
+                window.location.href = 'index.html';
+            },
 
         },
         async mounted() {
@@ -237,7 +244,7 @@
 
 
             if (logeado == null && usuario == null) {
-                window.location.href = "login.html";
+                window.location.href = "index.html";
             }
             console.log("numero temporada " + this.temporada_numero)
             console.log(this.serie_id)
