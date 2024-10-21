@@ -187,6 +187,30 @@ hr {
     font-size: 14px;
 }
 
+.rating-fecha {
+    display: flex;
+}
+.carta-rating{
+    background-color: rgba(39, 148, 245, 0.8);
+    max-width: 68px;
+    min-width: 55px;
+    height: 20px;
+    border-radius: 5px;
+}
+
+.carta-rating h6{
+    font-size: 13px;
+    width: auto;
+}
+.carta-datos {
+    margin-left: 20px;
+    margin-top: 1px;
+}
+.carta-datos h6 {
+    font-size: 13px;
+}
+
+
 .carta-texto {
     font-size: 13px;
     margin-bottom: 10px;
