@@ -12,211 +12,193 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/Style/navbar.css">
-    <link rel="stylesheet" href="/Style/estilo.css">
     <link rel="stylesheet" href="/Style/movie.css">
 
 </head>
 
 <body>
 
-
-
-    <div class="menu-superior">
-
-        <div class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap " style="height: 100%;">
-            <div class="opciones">
-                <a href="./home.html">
-                    <img src="/img/Logo.png" class="logo">
-                </a>
-                <div class="opciones-dropdown">
-                    <h4>Películas</h4>
-                    <div class="dropdown">
-                        <li><a href="./Listas/Lista_Peliculas/movies_popular.html">Populares</a></li>
-                        <li><a href="./Listas/Lista_Peliculas/movies_cartelera.html">En cartelera</a></li>
-                        <li><a href="./Listas/Lista_Peliculas/movies_rating.html">Mejor calificados</a></li>
-                    </div>
-                </div>
-                <div class="opciones-dropdown">
-                    <h4>Series de TV</h4>
-                    <div class="dropdown">
-                        <li><a href="./Listas/Lista_series/series_popular.html">Populares</a></li>
-                        <li><a href="./Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="opciones-perfil">
-                <div class="opciones-dropdown perfil-dropdown">
-                    <div class="button-perfil">
-                        <div class="icono-perfil">
-                            <img src="/img/perfil.png">
-                        </div>
-                    </div>
-                    <div class="dropdown-perfil">
-                        <li><a href="/Listas/Lista_Peliculas/movies_rated.html">Cerrar sesión</a></li>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="app">
-        <div class="pelicula-container">
-            <img :src="'https://image.tmdb.org/t/p/original/' + pelicula_detalles.backdrop_path"
-                alt="Backdrop de la Película" class="pelicula-container-img">
 
-            <div class="cuadro-transparente"></div>
+        <div class="menu-superior">
+            <div class="d-flex justify-content-between align-items-center" style="height: 100%;">
+                <div class="opciones">
+                    <a href="./home.html">
+                        <img src="/img/Logo.png" class="logo">
+                    </a>
 
-            <div class="portada">
-                <img :src="'http://image.tmdb.org/t/p/w500' + pelicula.poster_path" alt="Poster de la Película">
-            </div>
 
-            <div class="resumen">
-                <h1>{{ pelicula_detalles.title }}</h1>
-
-                <div>
-                    <span v-for="(genero, index) in pelicula_detalles.genres" :key="index">
-                        <a href="#" class="generos" @click="guardarDatos(genero.id)">
-                            {{ genero.name }}
-                        </a>
-                        <span v-if="index < pelicula_detalles.genres.length - 1">, </span>
-                    </span>
                 </div>
 
+                <div class="opciones-perfil">
+                    <div class="opciones-dropdown perfil-dropdown">
+                        <div class="button-perfil">
+                            <div class="icono-perfil">
+                                <img src="/img/perfil.png">
+                            </div>
+                        </div>
+                        <div class="dropdown-perfil">
+                            <li><a @click="cerrarSesion()">Cerrar sesión</a></li>
 
-                <div class="rating-trailer-container">
-                    <div class="rating-circle">
-                        <span>{{ pelicula.rating !== undefined ? pelicula.rating : 0 }}</span>
+                        </div>
                     </div>
-
-                    <div class="play-trailer">
-                        <i class="icon-control-play" @click="mostrarTrailer"></i>
-                    </div>
-
-                </div>
-
-
-                <h3>Resumen</h3>
-                <div class="resumen-texto">
-                    <p>{{ pelicula_detalles.overview }}</p>
-                </div>
-
-                <div class="boton-rating">
-                    <button @click="mostrarModal" class="btn btn-primary btn-lg">Añadir Rating</button>
                 </div>
             </div>
         </div>
 
-        <div class="casting-container">
-            <h4>Casting</h4>
-            <div class="row">
-                <div class="col-md-10">
-                    <div class="scroll-container">
-                        <div class="actor-card" v-for="(actor, index) in casting" :key="index">
-                            <img v-if="actor.profile_path" :src="actor.profile_path" alt="Imagen del Actor"
-                                class="img-fluid">
-                            <img v-else src="/img/placeholder.png" alt="Sin imagen disponible" class="img-fluid">
-                            <h4>{{ actor.name }}</h4>
-                            <p>Rol: {{ actor.character }}</p>
-                        </div>
-                    </div>
+        <div id="app">
+            <div class="pelicula-container">
+                <img :src="'https://image.tmdb.org/t/p/original/' + pelicula_detalles.backdrop_path"
+                    alt="Backdrop de la Película" class="pelicula-container-img">
+
+                <div class="cuadro-transparente"></div>
+
+                <div class="portada">
+                    <img :src="'http://image.tmdb.org/t/p/w500' + pelicula.poster_path" alt="Poster de la Película">
                 </div>
 
-                <div class="col-md-2 info-container">
-                    <h5>Palabras clave</h5>
-                    <div class="palabras-clave">
+                <div class="resumen">
+                    <h1>{{ pelicula_detalles.title }}</h1>
+
+                    <div>
+                        <span v-for="(genero, index) in pelicula_detalles.genres" :key="index">
+                            <a href="#" class="generos" @click="guardarDatos(genero.id)">
+                                {{ genero.name }}
+                            </a>
+                            <span v-if="index < pelicula_detalles.genres.length - 1">, </span>
+                        </span>
+                    </div>
+
+
+                    <div class="rating-trailer-container">
+                        <div class="rating-circle">
+                            <span>{{ pelicula.rating !== undefined ? pelicula.rating : 0 }}</span>
+                        </div>
+
+                        <div class="play-trailer">
+                            <i class="icon-control-play" @click="mostrarTrailer"></i>
+                        </div>
+
+                    </div>
+
+
+                    <h3>Resumen</h3>
+                    <div class="resumen-texto">
+                        <p>{{ pelicula_detalles.overview }}</p>
+                    </div>
+
+                    <div class="boton-rating">
+                        <button @click="mostrarModal" class="btn btn-primary btn-lg">Añadir Rating</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="casting-container">
+                <h4>Casting</h4>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="scroll-container">
+                            <div class="actor-card" v-for="(actor, index) in casting" :key="index">
+                                <img v-if="actor.profile_path" :src="actor.profile_path" alt="Imagen del Actor"
+                                    class="img-fluid">
+                                <img v-else src="/img/placeholder.png" alt="Sin imagen disponible" class="img-fluid">
+                                <h4>{{ actor.name }}</h4>
+                                <p>Rol: {{ actor.character }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 info-container">
+                        <h5>Palabras clave</h5>
+                        <div class="palabras-clave">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="btn-container">
+                                        <button @click="guardarClave(palabra.id)"
+                                            v-for="(palabra, index) in palabrasClave.slice(0, mitad_palabras_clave)"
+                                            :key="palabra.id" class="btn-palabra-clave">
+                                            <p>{{palabra.name}}</p>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="btn-container">
+                                        <button @click="guardarClave(palabra.id)"
+                                            v-for="(palabra, index) in palabrasClave.slice(mitad_palabras_clave)"
+                                            :key="palabra.id" class="btn-palabra-clave">
+                                            <p>{{palabra.name}}</p>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="recomendaciones-container">
+                        <h4>Películas Recomendadas</h4>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="btn-container">
-                                    <button @click="guardarClave(palabra.id)"
-                                        v-for="(palabra, index) in palabrasClave.slice(0, mitad_palabras_clave)"
-                                        :key="palabra.id" class="btn-palabra-clave">
-                                        <p>{{palabra.name}}</p>
-                                    </button>
+                            <div class="col-md-10">
+                                <div class="scroll-container">
+                                    <div class="pelicula-card"
+                                        v-for="(pelicula_detalles, index) in peliculasRecomendadas" :key="index">
+                                        <img @click="guardarDatosPelicula(pelicula_detalles)"
+                                            v-if="pelicula_detalles.poster_path"
+                                            :src="'https://image.tmdb.org/t/p/w500' + pelicula_detalles.poster_path"
+                                            alt="Poster de la Película" class="img-fluid">
+                                        <h5>{{ pelicula_detalles.title }}</h5>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="btn-container">
-                                    <button @click="guardarClave(palabra.id)"
-                                        v-for="(palabra, index) in palabrasClave.slice(mitad_palabras_clave)"
-                                        :key="palabra.id" class="btn-palabra-clave">
-                                        <p>{{palabra.name}}</p>
-                                    </button>
-                                </div>
-                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div id="ratingModal" class="modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Selecciona tu calificación</h5>
+                            <button type="button" @click="cerrarModal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="range" v-model="rating" min="1" max="10" step="0.5" class="rating-slider">
+                            <p>Calificación: {{ rating }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" @click="cerrarModal" class="btn-custom">Cerrar</button>
+                            <button type="button" @click="anadirRating" class="btn-custom">Guardar Rating</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-
-
-                <div class="recomendaciones-container">
-                    <h4>Películas Recomendadas</h4>
-                    <div class="row">
-                        <div class="col-md-10">
-                            <div class="scroll-container">
-                                <div class="pelicula-card" v-for="(pelicula_detalles, index) in peliculasRecomendadas"
-                                    :key="index">
-                                    <img @click="guardarDatosPelicula(pelicula_detalles)"
-                                        v-if="pelicula_detalles.poster_path"
-                                        :src="'https://image.tmdb.org/t/p/w500' + pelicula_detalles.poster_path"
-                                        alt="Poster de la Película" class="img-fluid">
-                                    <h5>{{ pelicula_detalles.title }}</h5>
-                                </div>
-                            </div>
+            <div id="trailerModal" class="modal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Tráiler</h5>
+                            <button type="button" class="close" @click="cerrarTrailer">&times;</button>
                         </div>
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div id="ratingModal" class="modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>Selecciona tu calificación</h5>
-                        <button type="button" @click="cerrarModal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="range" v-model="rating" min="1" max="10" step="0.5" class="rating-slider">
-                        <p>Calificación: {{ rating }}</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" @click="cerrarModal" class="btn-custom">Cerrar</button>
-                        <button type="button" @click="anadirRating" class="btn-custom">Guardar Rating</button>
+                        <div class="modal-body">
+                            <iframe v-if="trailerUrl" :src="trailerUrl" width="100%" height="400" frameborder="0"
+                                allowfullscreen></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div id="trailerModal" class="modal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Tráiler</h5>
-                        <button type="button" class="close" @click="cerrarTrailer">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <iframe v-if="trailerUrl" :src="trailerUrl" width="100%" height="400" frameborder="0"
-                            allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 
 
 
@@ -227,6 +209,21 @@
     crossorigin="anonymous"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const perfilButton = document.querySelector('.button-perfil');
+        const dropdownMenu = document.querySelector('.perfil-dropdown .dropdown-perfil');
+
+        perfilButton.addEventListener('click', function () {
+            dropdownMenu.classList.toggle('active');
+        });
+
+        // Cerrar el dropdown si se hace clic fuera
+        document.addEventListener('click', function (e) {
+            if (!perfilButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+            }
+        });
+    });
     const { createApp } = Vue;
 
     createApp({
@@ -341,7 +338,7 @@
                         console.error('Error en la solicitud:', error);
                     });
             },
-           
+
             obtenerPalabrasClave() {
                 fetch(`https://api.themoviedb.org/3/movie/${this.pelicula.id}/keywords?api_key=9cf1198f36410ea23852c01c0c427731`)
                     .then(response => response.json())
@@ -401,7 +398,13 @@
                 window.location.href = 'movie.html';
             },
 
-
+            cerrarSesion() {
+                localStorage.removeItem("logeado")
+                localStorage.removeItem('usuario',);
+                localStorage.removeItem('session_id',);
+                localStorage.removeItem('request_token',);
+                window.location.href = 'index.html';
+            }
         },
         async mounted() {
             let logeado = localStorage.getItem("logeado");
@@ -410,7 +413,7 @@
             let session_id = localStorage.getItem("session_id");
 
             if (logeado == null && usuario == null) {
-                window.location.href = "login.html";
+                window.location.href = "index.html";
             }
 
             this.obtenerPelicula();
