@@ -25,21 +25,7 @@
                     <a href="./home.html">
                         <img src="/img/Logo.png" class="logo">
                     </a>
-                    <div class="opciones-dropdown">
-                        <h4>Películas</h4>
-                        <div class="dropdown">
-                            <li><a href="./Listas/Lista_Peliculas/movies_popular.html">Populares</a></li>
-                            <li><a href="./Listas/Lista_Peliculas/movies_cartelera.html">En cartelera</a></li>
-                            <li><a href="./Listas/Lista_Peliculas/movies_rating.html">Mejor calificados</a></li>
-                        </div>
-                    </div>
-                    <div class="opciones-dropdown">
-                        <h4>Series de TV</h4>
-                        <div class="dropdown">
-                            <li><a href="./Listas/Lista_series/series_popular.html">Populares</a></li>
-                            <li><a href="./Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
-                        </div>
-                    </div>
+
 
                 </div>
 
@@ -62,7 +48,7 @@
         <div class="serie-container">
             <div class="serie" v-for="datos in temporada" :key="datos.id">
                 <div class="temporada-imagen">
-                    <img :src="'https://image.tmdb.org/t/p/w500/' + datos.poster_path" alt="">
+                    <img @click="obtener_serie()" :src="'https://image.tmdb.org/t/p/w500/' + datos.poster_path" alt="">
                 </div>
                 <div class="temporada-informacion">
                     <h3>Temporada {{datos.season_number}} ({{datos.air_date}})</h3>
@@ -102,12 +88,15 @@
                         <h6 class="carta-titulo">{{episodio.episode_number}} {{ episodio.name }}</h6>
                         <div class="rating-fecha">
                             <div class="carta-rating">
-                                <h6>{{episodio.vote_average}}</h6>
+                                <h6>⭐ {{episodio.vote_average}}% </h6>
+                            </div>
+                            <div class="carta-datos">
+                                <h6>{{episodio.air_date}} • {{episodio.runtime}}m</h6>
                             </div>
                         </div>
-                        
+
                         <p>{{episodio.overview}}</p>
-                        
+
                     </div>
 
                     <button class="btn-expandir" @click="toggleExpandir(episodio)">
@@ -163,7 +152,8 @@
                 temporada: [], temporada_imagen: "", total_temporadas: 0,
                 episodios: [],
                 estrellas_invitadas: [], total_estrellas_invitadas: 0, columna_estrellas_invitadas: 0, estrellas_por_episodio: [],
-                estrellas_primera_columna: [], estrellas_segunda_columna: [], estrellas_tercera_columna: []
+                estrellas_primera_columna: [], estrellas_segunda_columna: [], estrellas_tercera_columna: [],
+                serie: [],
             };
         },
         methods: {
@@ -202,6 +192,23 @@
                     console.error(error);
                 }
             },
+            async obtener_serie() {
+                const url = `https://api.themoviedb.org/3/tv/${this.serie_id}?&api_key=9cf1198f36410ea23852c01c0c427731`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+                    const json = await response.json();
+
+                    this.serie = json;
+                    this.guardar_serie(this.serie)
+
+
+                } catch (error) {
+                    console.error(error);
+                }
+            },
             temporada_anterior() {
                 this.temporada_numero = this.temporada_numero - 1;
                 this.temporada = []
@@ -212,8 +219,20 @@
                 this.temporada = []
                 this.obtener_episodios()
             },
+
             toggleExpandir(episodio) {
                 episodio.expandido = !episodio.expandido;
+            },
+            guardar_serie(serie) {
+                localStorage.setItem('serieSeleccionada', JSON.stringify(serie));
+                window.location.href = 'serie.html';
+            },
+            cerrarSesion() {
+                localStorage.removeItem("logeado")
+                localStorage.removeItem('usuario',);
+                localStorage.removeItem('session_id',);
+                localStorage.removeItem('request_token',);
+                window.location.href = 'index.html';
             },
 
         },
@@ -225,7 +244,7 @@
 
 
             if (logeado == null && usuario == null) {
-                window.location.href = "login.html";
+                window.location.href = "index.html";
             }
             console.log("numero temporada " + this.temporada_numero)
             console.log(this.serie_id)
