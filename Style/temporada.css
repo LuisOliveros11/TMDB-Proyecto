@@ -26,6 +26,7 @@ body {
     height: 120px;
     border-radius: 8px;
     margin-top: 1vh;
+    cursor: pointer;
 }
 
 .temporada-informacion {

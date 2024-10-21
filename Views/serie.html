@@ -25,22 +25,8 @@
                     <a href="./home.html">
                         <img src="/img/Logo.png" class="logo">
                     </a>
-                    <div class="opciones-dropdown">
-                        <h4>Películas</h4>
-                        <div class="dropdown">
-                            <li><a href="./Listas/Lista_Peliculas/movies_popular.html">Populares</a></li>
-                            <li><a href="./Listas/Lista_Peliculas/movies_cartelera.html">En cartelera</a></li>
-                            <li><a href="./Listas/Lista_Peliculas/movies_rating.html">Mejor calificados</a></li>
-                        </div>
-                    </div>
-                    <div class="opciones-dropdown">
-                        <h4>Series de TV</h4>
-                        <div class="dropdown">
-                            <li><a href="./Listas/Lista_series/series_popular.html">Populares</a></li>
-                            <li><a href="./Listas/Lista_series/series_rating.html">Mejor calificados</a></li>
-                        </div>
-                    </div>
-
+                  
+                   
                 </div>
 
                 <div class="opciones-perfil">
@@ -107,6 +93,9 @@
                                 <img src="/img/icon/icono_guardado.png" alt="">
                             </div>
                         </button>
+                        <div class="rating-circle">
+                            <span>{{ pelicula.rating !== undefined ? pelicula.rating : 0 }}</span>
+                        </div>
 
                     </div>
 
@@ -135,8 +124,7 @@
 
                         <div class="boton-rating">
                             <button @click="mostrarModal" class="btn btn-primary btn-lg">Añadir Rating</button>
-                            <span v-if="pelicula.rating !== undefined" class="ml-3">Rating dado: {{ pelicula.rating
-                                }}</span>
+                           
                         </div>
 
                     </div>
@@ -262,7 +250,7 @@
                     <!-- PELICULAS RECOMENDADAS -->
                     <div class="scroll-container">
                         <div class="actor-card" v-for="(serie, index) in series_recomendadas" :key="index">
-                            <img v-if="serie.poster_path"
+                            <img v-if="serie.poster_path" @click="guardar_serie(serie)"
                                 :src="'https://image.tmdb.org/t/p/original/' + serie.poster_path" alt="Imagen de serie"
                                 class="img-fluid">
                             <img v-else src="/img/placeholder.png" alt="Sin imagen disponible" class="img-fluid">
@@ -733,7 +721,7 @@
             },
             guardar_id_palabra_clave(palabra_clave) {
                 localStorage.setItem('palabraClaveSeleccionada', JSON.stringify(palabra_clave));
-                window.location.href = 'palabra_clave.html';
+                window.location.href = 'palabra_clave_serie.html';
             },
             guardar_numero_temporada(temporada) {
                 localStorage.setItem('temporadaSeleccionada2', temporada);
@@ -743,6 +731,10 @@
             guardar_artista(artista) {
                 localStorage.setItem('artistaSeleccionado', artista)
                 window.location.href = 'artista.html';
+            },
+            guardar_serie(serie) {
+                localStorage.setItem('serieSeleccionada', JSON.stringify(serie));
+                window.location.href = 'serie.html';
             },
             cerrarSesion() {
                 localStorage.removeItem("logeado")
