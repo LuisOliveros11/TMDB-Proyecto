@@ -318,7 +318,7 @@
                     .then(json => {
                         this.pelicula_detalles = json;
                         this.generos = this.pelicula_detalles.genres.map(genero => genero.name).join(', ');
-                        console.log(response)
+                        console.log(this.pelicula_detalles)
                     })
                     .catch(error => {
                         console.error('Error en la solicitud:', error);
