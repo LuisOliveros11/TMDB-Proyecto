@@ -741,7 +741,7 @@
                 localStorage.removeItem('usuario',);
                 localStorage.removeItem('session_id',);
                 localStorage.removeItem('request_token',);
-                window.location.href = './index.html';
+                window.location.href = './login.html';
             }
         },
         async mounted() {
@@ -753,7 +753,7 @@
 
 
             if (logeado == null && usuario == null) {
-                window.location.href = "index.html";
+                window.location.href = "login.html";
             }
             console.log(this.pelicula.id)
             this.obtener_pelicula();
