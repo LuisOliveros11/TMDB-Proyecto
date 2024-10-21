@@ -131,7 +131,7 @@
             Películas
           </button>
         </h3>
-        <div id="main-popular" v-if="peliculas_Gratis.length > 0">
+        <div id="main-popular" v-if="peliculas_Gratis.length >= 5">
           <div class="container-fluid py-2">
             <div class="d-flex flex-row flex-nowrap">
               <div v-for="pelicula in peliculas_Gratis" :key="pelicula.id" class="card card-body">
