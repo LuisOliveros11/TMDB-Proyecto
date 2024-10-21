@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Artista</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Style/artista.css">
+</head>
+
+<body>
+    <div id="app" class="container mt-5">
+        <h1 class="text-center">Detalles del Artista</h1>
+
+        <div class="card" v-if="artista">
+            <div class="card-body">
+                <h2 class="card-title text-center">{{ artista.name }}</h2>
+                <img v-if="artista.profile_path" :src="'https://image.tmdb.org/t/p/w500/' + artista.profile_path" alt="Foto del Artista" class="img-fluid rounded mx-auto d-block mb-3">
+                <p><strong>Fecha de nacimiento:</strong> {{ artista.birthday || 'No disponible' }}</p>
+                <p><strong>Biografía:</strong></p>
+                <div class="biography p-3 bg-light rounded shadow-sm">{{ artista.biography || 'No hay biografía disponible.' }}</div>
+
+                <h3 class="mt-4">Películas donde ha participado</h3>
+                <div v-if="peliculas.length > 0" class="row">
+                    <div v-for="pelicula in peliculas" :key="pelicula.id" class="col-md-4 mb-3">
+                        <div class="card">
+                            <img v-if="pelicula.poster_path" :src="'https://image.tmdb.org/t/p/w200/' + pelicula.poster_path" alt="Póster de {{ pelicula.title }}" class="card-img-top">
+                            <div class="card-body">
+                                <p class="card-text">{{ pelicula.title }} ({{ pelicula.release_date ? pelicula.release_date.split('-')[0] : 'Fecha no disponible' }})</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else>
+                    <p>No se encontraron películas para este artista.</p>
+                </div>
+            </div>
+        </div>
+
+        <div v-else>
+            <p>No se encontraron detalles para este artista.</p>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    artista: null, 
+                    peliculas: [] 
+                };
+            },
+            methods: {
+                async obtenerDetallesArtista(artistaId) {
+                    let url = `https://api.themoviedb.org/3/person/${artistaId}?api_key=9cf1198f36410ea23852c01c0c427731&language=es-ES`;
+                    try {
+                        let response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(`Error HTTP: ${response.status}`);
+                        }
+                        let data = await response.json();
+
+                        if (!data.biography) {
+                            console.log('Biografía no disponible en español, buscando en inglés...');
+                            url = `https://api.themoviedb.org/3/person/${artistaId}?api_key=9cf1198f36410ea23852c01c0c427731&language=en-US`;
+                            response = await fetch(url);
+                            if (!response.ok) {
+                                throw new Error(`Error HTTP: ${response.status}`);
+                            }
+                            data = await response.json();
+                        }
+
+                        this.artista = data; 
+
+                        this.obtenerPeliculasArtista(artistaId);
+                    } catch (error) {
+                        console.error('Error al obtener los detalles del artista:', error.message);
+                    }
+                },
+                async obtenerPeliculasArtista(artistaId) {
+                    let url = `https://api.themoviedb.org/3/person/${artistaId}/movie_credits?api_key=9cf1198f36410ea23852c01c0c427731&language=es-ES`;
+                    try {
+                        let response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(`Error HTTP: ${response.status}`);
+                        }
+                        let data = await response.json();
+
+                        this.peliculas = data.cast;
+                    } catch (error) {
+                        console.error('Error al obtener las películas del artista:', error.message);
+                    }
+                }
+            },
+            mounted() {
+                const artistaId = localStorage.getItem('artistaSeleccionado');
+                if (artistaId) {
+                    this.obtenerDetallesArtista(artistaId);
+                } else {
+                    console.error('No se encontró el ID del artista en localStorage');
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
